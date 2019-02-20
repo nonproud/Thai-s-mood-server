@@ -1,26 +1,23 @@
 const express = require('express')
 const mongdoClient = require('mongodb').MongoClient
+const bodyParser = require('body-parser')
+
 const app = express()
 
-
-
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/express', (req, res) => {
     res.send('This is Express!')
 })
 
-app.get('/researcher', (req, res) => {
-    var db
-    mongdoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true }, (err, client) => {
-    if(err) return console.log("Failed" + err)
-    db = client.db('Thai-s-mood-database')
-    db.collection("researcher").find().toArray((err, results) => {
-        // console.log(results);
-        res.send(results)
-    })
-    
-    // console.log("Database connected!")
-    })
+app.get('/member/login/checklogin', (req, res) =>{
+    res.send('Well done!')
+})
+
+app.post("/member", (req, res) => {
+    console.log(req.body)
+    res.status(201).json(req.body)
 })
 
 app.listen(4553, () =>{
