@@ -17,16 +17,13 @@ module.exports = {
     },
 
     connectMemberDetails: function () {
-        return connectdb('member_details')
+        // return connectdb('member_details')
     },
 
     connectRecord: function () {
-        return connectdb('record')
+        // return connectdb('record')
     }
 }
 
-function connectdb (collection){
-    var cn = 
-    return cn;
-}
+
 
