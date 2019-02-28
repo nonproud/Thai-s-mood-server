@@ -7,7 +7,7 @@ module.exports = {
                 console.log(err)
                 return false
             } else {
-                db.collection(collection).find().insert(req.body, function (err, result) {
+                db.collection("member").find().insert(req.body, function (err, result) {
                     if (err) throw err
                     console.log(result)
                     return true;
