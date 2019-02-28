@@ -2,39 +2,28 @@ var MongoClient = require('mongodb').MongoClient
 
 module.exports = {
     connectMemer: function () {
-        MongoClient.connect('mongodb://localhost:27017/ThaisMood', function (err, db) {
-            if (err) throw err
-
-            db.collection('member_login').find().toArray(function (err, result) {
-                if (err) throw err
-
-                console.log(result)
-            })
-        })
+        return connectdb('member_login')
     },
 
     connectMemberDetails: function () {
-        MongoClient.connect('mongodb://localhost:27017/ThaisMood', function (err, db) {
-            if (err) throw err
-
-            db.collection('member_details').find().toArray(function (err, result) {
-                if (err) throw err
-
-                console.log(result)
-            })
-        })
+        return connectdb('member_details')
     },
 
     connectRecord: function () {
-        MongoClient.connect('mongodb://localhost:27017/ThaisMood', function (err, db) {
+        return connectdb('record')
+    }
+}
+
+function connectdb (collection){
+    var cn = MongoClient.connect('mongodb://localhost:27017/ThaisMood', { useNewUrlParser: true }, function (err, db) {
             if (err) throw err
 
-            db.collection('record').find().toArray(function (err, result) {
+            db.collection(collection).find().toArray(function (err, result) {
                 if (err) throw err
 
                 console.log(result)
             })
         })
-    }
+    return cn;
 }
 
