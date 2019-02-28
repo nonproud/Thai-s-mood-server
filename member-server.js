@@ -9,16 +9,17 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.post("/member", (req, res) => {
-    console.log(req.body)
+    writeLog(req)
     res.status(201).json(req.body)
 })
 
 app.put('/member', (req, res) =>{
-    res.send('Well done!')
+    res.send('member')
+    var c = database.connectMemberDetails()
 })
 
 app.delete('/member', (req, res) =>{
-    res.send('Well done!')
+    res.send('member Well done!')
 })
 
 app.post("/member/data", (req, res) => {
@@ -27,11 +28,11 @@ app.post("/member/data", (req, res) => {
 })
 
 app.put('/member/data', (req, res) =>{
-    res.send('Well done!')
+    res.send('meber/data!')
 })
 
 app.delete('/member/data', (req, res) =>{
-    res.send('Well done!')
+    res.send('member/data Well done!')
 })
 
 app.post("/member/login", (req, res) => {
@@ -42,3 +43,9 @@ app.post("/member/login", (req, res) => {
 app.listen(4553, () =>{
     console.log("Thais Mood 'Member' API was ran on PORT 4553;")
 })
+
+function writeLog(req){
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log(ip)
+    return ip;
+}
