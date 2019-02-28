@@ -9,8 +9,13 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.post("/member", (req, res) => {
-    writeLog(req)
-    res.status(201).json(req.body)
+    if(database.insertNewMember(req)){
+        res.status(201).json(req.body)
+    } else {
+        res.status(500)
+    }
+
+    
 })
 
 app.put('/member', (req, res) =>{
@@ -47,5 +52,4 @@ app.listen(4553, () =>{
 function writeLog(req){
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log(ip)
-    return ip;
 }

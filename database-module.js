@@ -1,8 +1,19 @@
 var MongoClient = require('mongodb').MongoClient
 
 module.exports = {
-    connectMemer: function () {
-        return connectdb('member_login')
+    insertNewMember: function (req) {
+        MongoClient.connect('mongodb://localhost:27017/ThaisMood', { useNewUrlParser: true }, function (err, db) {
+            if (err) {
+                console.log(err)
+                return false
+            } else {
+                db.collection(collection).find().insert(req.body, function (err, result) {
+                    if (err) throw err
+                    console.log(result)
+                    return true;
+                })
+            }            
+        })
     },
 
     connectMemberDetails: function () {
@@ -15,15 +26,7 @@ module.exports = {
 }
 
 function connectdb (collection){
-    var cn = MongoClient.connect('mongodb://localhost:27017/ThaisMood', { useNewUrlParser: true }, function (err, db) {
-            if (err) throw err
-
-            db.collection(collection).find().toArray(function (err, result) {
-                if (err) throw err
-
-                console.log(result)
-            })
-        })
+    var cn = 
     return cn;
 }
 
