@@ -9,8 +9,6 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-
-
 function getValidateMail(toEmail, confirm_code) {
     let validate_mail = {
         from: 'thaismood.validate@gmail.com',
