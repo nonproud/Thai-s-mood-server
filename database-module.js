@@ -40,8 +40,35 @@ module.exports = {
         });
     },
 
-    connectMemberDetails: function () {
-        // return connectdb('member_details')
+    insertNewMemberDetails: function (req, res) {
+        MongoClient.connect(url, { useNewUrlParser: true }, (err, database) => {
+            assert.equal(null, err)
+            console.log("Ready to insert member details.")
+
+            /* Insert new member details section */
+            mydb = database.db(dbName)
+            // let detailsToInsert = {
+            //     "member_id": req.body.member_id,
+            //     "name": req.body.name,
+            //     "lastname": req.body.lname,
+            //     "gender": req.body.gender,
+            //     "type": req.body.type,
+            //     "validation_status": true,
+
+
+            // }
+            mydb.collection('member_details').insertOne(insertString, (err, result) => {
+                if (err)
+                    res.status(500).sent("Opp! You hit 500")
+                else {
+                    console.log("Insert member details for ID: " + result.insertedId)
+                    mail_sender.sendValidateMail(req.body.email, req.body.confirm_no)
+                    res.status(201).send(result.insertedId)
+                }
+            })
+            database.close()
+            /* End of insert new member */
+        });
     },
 
     connectRecord: function () {
