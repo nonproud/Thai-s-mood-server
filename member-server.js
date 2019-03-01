@@ -10,13 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 
 app.post("/member", (req, res) => {
-    if(database.insertNewMember(req, res)){
-        res.status(201).json(req.body)
-    } else {
-        res.status(500)
-    }
-
-    
+    database.insertNewMember(req, res)
 })
 
 app.put('/member', (req, res) =>{
@@ -29,8 +23,7 @@ app.delete('/member', (req, res) =>{
 })
 
 app.post("/member/data", (req, res) => {
-    console.log(req.body)
-    res.status(201).json(req.body)
+    database.insertNewMemberDetails(req, res)
 })
 
 app.put('/member/data', (req, res) =>{
