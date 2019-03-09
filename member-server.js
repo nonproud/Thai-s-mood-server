@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 
 app.post("/member", (req, res) => {
-    database.insertNewMember(req, res)
+    database.createAccount(req, res)
 })
 
 app.put('/member', (req, res) =>{
