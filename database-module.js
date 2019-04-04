@@ -212,7 +212,7 @@ function generateOTP() {
 function checkIsEmailDuplicate(req, res){
     var email = req.body.email
     pool.getConnection().then(conn =>{
-        var sql = "SELECT * FROM login WHERE email = '" + email + '"'
+        var sql = "SELECT * FROM login WHERE email = '" + email + "'"
         conn.query(sql).then(result =>{
             if(!result.length){
                 res.status(201).send("0")
