@@ -20,14 +20,14 @@ app.get("/member/profile", (res, req) => {
     database.getAccountProfile(req, res)
 })
 
-app.post("/member/data", (req, res) => {
+app.post("/member/profile", (req, res) => {
     database.createAccountProfile(req, res)
 })
 /********************************** End of Finished ******************/
 
 
 
-app.put('/member/data', (req, res) =>{
+app.put('/member/profile', (req, res) =>{
     res.send('meber/data!')
 })
 
@@ -36,8 +36,9 @@ app.post("/member/login", (req, res) => {
     res.status(201).json(req.body)
 })
 
-app.post("/member/opt", (req, res) => {
-
+app.post("/member/otp", (req, res) => {
+    console.log("member/otp")
+    database.verifyOTP(req, res)
 })
  
 app.listen(4553, () =>{
