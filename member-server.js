@@ -8,6 +8,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 /*********************************Finished **************************/
+/***************************** /member ********************************/
 app.post("/member", (req, res) => {
     database.createAccount(req, res)
 })
@@ -15,13 +16,24 @@ app.post("/member", (req, res) => {
 app.put('/member', (req, res) =>{
     database.updateLoginDetails(req, res)
 })
+/**************************** end of /member *************************/
 
+/**************************** /member/profile ************************/
 app.get("/member/profile", (res, req) => {
     database.getAccountProfile(req, res)
 })
 
 app.post("/member/profile", (req, res) => {
     database.createAccountProfile(req, res)
+})
+/**************************** end of /member/profile *****************/
+
+app.post("/member/otp", (req, res) => {
+    database.verifyOTP(req, res)
+})
+
+app.get("/member/email", (req, res) => {
+    database.verifyOTP(req, res)
 })
 /********************************** End of Finished ******************/
 
@@ -36,10 +48,7 @@ app.post("/member/login", (req, res) => {
     res.status(201).json(req.body)
 })
 
-app.post("/member/otp", (req, res) => {
-    console.log("member/otp")
-    database.verifyOTP(req, res)
-})
+
  
 app.listen(4553, () =>{
     console.log("Thais Mood 'Member' API was ran on PORT 4553;")

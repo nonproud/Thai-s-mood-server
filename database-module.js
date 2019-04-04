@@ -17,7 +17,8 @@ module.exports = {
     createAccountProfile: createAccountProfile,
     getAccountProfile: getAccountProfile,
     updateLoginDetails: updateLoginDetails,
-    verifyOTP: verifyOTP
+    verifyOTP: verifyOTP,
+    checkIsEmailDuplicate: checkIsEmailDuplicate
 
 }
 
@@ -35,6 +36,7 @@ function createAccount(req, res) {
                     res.status(201).send(id)
                     conn.end()
                 }).catch(err => {
+                    console.log(err)
                     res.status(502).send("Cant create user profile now, Try again later.")
                 })
             })
@@ -126,7 +128,7 @@ function updateLoginDetails(req, res) {
             })
         })
 
-    } else if (password != "NULL") {
+    } else if (passwd != "NULL") {
         bcrypt.genSalt(saltRounds, (err, salt) => {
             bcrypt.hash(req.body.passwd, salt, (err, hash) => {
                 pool.getConnection().then(conn => {
@@ -205,4 +207,23 @@ function generateOTP() {
         otp += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return otp;
+}
+
+function checkIsEmailDuplicate(req, res){
+    var email = req.body.email
+    pool.getConnection().then(conn =>{
+        var sql = "SELECT * FROM login WHERE email = '" + email + '"'
+        conn.query(sql).then(result =>{
+            if(!result.length){
+                res.status(201).send("0")
+                console.log("Email: " + email + " is not duplicate.")
+            }else{
+                res.status(201).send("0")
+                console.log("Email: " + email + " is duplicate.")
+            }
+            conn.end();
+        }).catch(err => {
+            res.status(502).send("Can't complete your request righnow, try again later.")
+        })
+    })
 }
