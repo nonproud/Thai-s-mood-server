@@ -218,7 +218,7 @@ function checkIsEmailDuplicate(req, res){
                 res.status(201).send("0")
                 console.log("Email: " + email + " is not duplicate.")
             }else{
-                res.status(201).send("0")
+                res.status(201).send("1")
                 console.log("Email: " + email + " is duplicate.")
             }
             conn.end();
