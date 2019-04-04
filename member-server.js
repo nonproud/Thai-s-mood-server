@@ -33,7 +33,7 @@ app.post("/member/otp", (req, res) => {
 })
 
 app.get("/member/email", (req, res) => {
-    database.verifyOTP(req, res)
+    database.checkIsEmailDuplicate(req, res)
 })
 /********************************** End of Finished ******************/
 
