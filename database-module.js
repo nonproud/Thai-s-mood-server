@@ -156,25 +156,25 @@ function authLogin(req, res) {
 }
 
 function verifyOTP(req, res) {
-    var userID = req.body.id
+    var email = req.body.email
     var otp = req.body.otp
     pool.getConnection().then(conn => {
-        var sql = "SELECT * FROM login WHERE id = '" + userID + "' AND otp = '" + otp + "'"
+        var sql = "SELECT * FROM login WHERE email = '" + email + "' AND otp = '" + otp + "'"
         conn.query(sql).then((result) => {
             if (!result.length) {
-                console.log("id: " + userID + " verify status: failed" )
+                console.log("Email: " + email + " verify status: failed" )
                 res.status(201).send("0")
                 conn.end()
             }else{
-                console.log("id: " + userID + " verify status: success" )
+                console.log("Email " + email + " verify status: success" )
                 res.status(201).send("1")
                 pool.getConnection().then(conn =>{
-                    var sql2 = "UPDATE login SET is_verified = 1 WHERE id = '" + userID + "'"
+                    var sql2 = "UPDATE login SET is_verified = 1 WHERE email = '" + email + "'"
                     conn.query(sql2).then(result => {
-                        console.log("id: " + userID + " change verify status: success" )
+                        console.log("Email: " + email + " change verify status: success" )
                         conn.close
                     }).catch(err =>{
-                        console.log("id: " + userID + " change verify status: failed" )
+                        console.log("Email: " + email + " change verify status: failed" )
                     })
                 })
                 conn.end()
