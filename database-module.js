@@ -1,6 +1,5 @@
 /*MariaDB version */
 const mariadb = require('mariadb');
-const jwt = require("jwt-simple") 
 const pool = mariadb.createPool({
     host: 'localhost',
     port: 3306,
@@ -9,6 +8,17 @@ const pool = mariadb.createPool({
     database: 'thaismood',
     connectionLimit: 5
 });
+const jwt = require("jwt-simple")
+
+const expressSchema = require('express-schema'),
+    schemas = expressSchema.schemas,
+    Schema = expressSchema.Schema;
+// var payloadschema = new Schema({
+//     id: schemas.string.length(20, 20).require(), // foo should between 3~5, and not undefined.
+//     emai: schemas.string.length(0, 100).require(),
+//     is_verified: schemas.required(),
+//     iat: schemas.string.required() 
+//     });
 const bcrypt = require('bcrypt')
 const saltRounds = 15
 const mail_sender = require('./mail-sender')
@@ -161,21 +171,21 @@ function updateLoginDetails(req, res) {
 }
 
 function authLogin(req, res) {
-
     pool.getConnection().then(conn => {
         id = req.body.id
         email = req.body.email
         password = req.body.password
-        conn.query("SELECT * FROM login WHERE id = '" + id + "' AND email = '" + email + "';")
+        conn.query("SELECT * FROM login WHERE email = '" + email + "';")
             .then((result) => {
+                var payload = {
+                    id: result[0].id,
+                    email: result[0].email,
+                    is_verified: result[0].is_verified,
+                    iat: new Date()
+                }
                 bcrypt.compare(password, result[0].password, (err, result) => {
                     if (err) throw err
                     if (result) {
-                        const payload = {
-                            sub: req.body.email,
-                            id: req.body.id,
-                            iat: new Date().getTime() // issued at time
-                        }
                         res.send(jwt.encode(payload, SECRET))
                     } else {
                         res.send("0")
