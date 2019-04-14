@@ -12,6 +12,7 @@ const saltRounds = 15
 const mail_sender = require('./mail-sender')
 
 module.exports = {
+    authLogin: authLogin,
     createAccount: createAccount,
     getNewOTP: getNewOTP,
     createAccountProfile: createAccountProfile,
@@ -24,7 +25,7 @@ module.exports = {
 
 function createAccount(req, res) {
     bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(req.body.passwd, salt, (err, hash) => {
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
             var id = generateID(), otp = generateOTP(), email = req.body.email
             var values = "'" + id + "', '" + email + "', '" + hash + "', '" + otp + "', " + 0;
 
@@ -151,8 +152,26 @@ function updateLoginDetails(req, res) {
     }
 }
 
-function authLogin(req, res) {
+function authLogin(id, email, password) {
+    bcrypt.genSalt(saltRounds, (err, salt) => {
+        bcrypt.hash(password, salt, (err, hash) => {
+            pool.getConnection().then(conn => {
 
+                conn.query("SELECT * FROM login WHERE id = '" + id + "' AND email = '" + email +"' AND password = '" + hash + "';")
+                .then((result) => {
+                    conn.end()
+                    if(result[0] != null){
+                        return true
+                    }
+                    return false
+                }).catch(err => {
+                    console.log(err)
+                    res.status(502).send("Cant create user profile now, Try again later.")
+                })
+            })
+
+        })
+    })
 }
 
 function verifyOTP(req, res) {
