@@ -13,6 +13,7 @@ const SECRET = "this is a real thai's mood server!"
 /*********** Middle ware zone **********************************/
 
 const loginMiddle = (req, res, next) => {
+    id - req,body.id
     email = req.body.email
     password = req.body.password
     if(database.authLogin(id, email, password) != true){
