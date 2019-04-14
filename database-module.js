@@ -1,7 +1,9 @@
 /*MariaDB version */
 const mariadb = require('mariadb');
+const jwt = require("jwt-simple") 
 const pool = mariadb.createPool({
     host: 'localhost',
+    port: 3306,
     user: 'api',
     password: 'password',
     database: 'thaismood',
@@ -10,8 +12,10 @@ const pool = mariadb.createPool({
 const bcrypt = require('bcrypt')
 const saltRounds = 15
 const mail_sender = require('./mail-sender')
+const SECRET = "this is a real thai's mood server!"
 
 module.exports = {
+    getSecret: getSecret,
     authLogin: authLogin,
     createAccount: createAccount,
     getNewOTP: getNewOTP,
@@ -60,6 +64,10 @@ function getNewOTP(req, res) {
             res.status(502).send("Failed")
         })
     })
+}
+
+function getSecret() {
+    return SECRET
 }
 
 function createAccountProfile(req, res) {
@@ -152,25 +160,32 @@ function updateLoginDetails(req, res) {
     }
 }
 
-function authLogin(id, email, password) {
-    bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(password, salt, (err, hash) => {
-            pool.getConnection().then(conn => {
+function authLogin(req, res) {
 
-                conn.query("SELECT * FROM login WHERE id = '" + id + "' AND email = '" + email +"' AND password = '" + hash + "';")
-                .then((result) => {
-                    conn.end()
-                    if(result[0] != null){
-                        return true
+    pool.getConnection().then(conn => {
+        id = req.body.id
+        email = req.body.email
+        password = req.body.password
+        conn.query("SELECT * FROM login WHERE id = '" + id + "' AND email = '" + email + "';")
+            .then((result) => {
+                bcrypt.compare(password, result[0].password, (err, result) => {
+                    if (err) throw err
+                    if (result) {
+                        const payload = {
+                            sub: req.body.email,
+                            id: req.body.id,
+                            iat: new Date().getTime() // issued at time
+                        }
+                        res.send(jwt.encode(payload, SECRET))
+                    } else {
+                        res.send("0")
                     }
-                    return false
-                }).catch(err => {
-                    console.log(err)
-                    res.status(502).send("Cant create user profile now, Try again later.")
                 })
+                conn.end()
+            }).catch(err => {
+                console.log(err)
+                res.status(502).send("Cant login now, Try again later.")
             })
-
-        })
     })
 }
 
@@ -181,19 +196,19 @@ function verifyOTP(req, res) {
         var sql = "SELECT * FROM login WHERE email = '" + email + "' AND otp = '" + otp + "'"
         conn.query(sql).then((result) => {
             if (!result.length) {
-                console.log("Email: " + email + " verify status: failed" )
+                console.log("Email: " + email + " verify status: failed")
                 res.status(201).send("0")
                 conn.end()
-            }else{
-                console.log("Email " + email + " verify status: success" )
+            } else {
+                console.log("Email " + email + " verify status: success")
                 res.status(201).send("1")
-                pool.getConnection().then(conn =>{
+                pool.getConnection().then(conn => {
                     var sql2 = "UPDATE login SET is_verified = 1 WHERE email = '" + email + "'"
                     conn.query(sql2).then(result => {
-                        console.log("Email: " + email + " change verify status: success" )
+                        console.log("Email: " + email + " change verify status: success")
                         conn.close
-                    }).catch(err =>{
-                        console.log("Email: " + email + " change verify status: failed" )
+                    }).catch(err => {
+                        console.log("Email: " + email + " change verify status: failed")
                     })
                 })
                 conn.end()
@@ -228,15 +243,15 @@ function generateOTP() {
     return otp;
 }
 
-function checkIsEmailDuplicate(req, res){
+function checkIsEmailDuplicate(req, res) {
     var email = req.body.email
-    pool.getConnection().then(conn =>{
+    pool.getConnection().then(conn => {
         var sql = "SELECT * FROM login WHERE email = '" + email + "'"
-        conn.query(sql).then(result =>{
-            if(!result.length){
+        conn.query(sql).then(result => {
+            if (!result.length) {
                 res.status(201).send("0")
                 console.log("Email: " + email + " is not duplicate.")
-            }else{
+            } else {
                 res.status(201).send("1")
                 console.log("Email: " + email + " is duplicate.")
             }
