@@ -40,12 +40,12 @@ module.exports = {
 function createAccount(req, res) {
     bcrypt.genSalt(saltRounds, (err, salt) => {
         bcrypt.hash(req.body.password, salt, (err, hash) => {
-            var id = generateID(), otp = generateOTP(), email = req.body.email
-            var values = "'" + id + "', '" + email + "', '" + hash + "', '" + otp + "', " + 0;
+            var otp = generateOTP(), email = req.body.email
+            var values = "'" + email + "', '" + hash + "', '" + otp + "', " + 0;
 
             pool.getConnection().then(conn => {
 
-                conn.query("INSERT INTO login (id, email, password, otp, is_verified) VALUES (" + values + ");").then((result) => {
+                conn.query("INSERT INTO login (email, password, otp, is_verified) VALUES (" + values + ");").then((result) => {
                     console.log(id)
                     mail_sender.sendValidateMail(email, otp)
                     res.status(201).send(id)
@@ -170,7 +170,7 @@ function updateLoginDetails(req, res) {
     }
 }
 
-function authLogin(req, res) {
+function authLogin(req, res) {  
     pool.getConnection().then(conn => {
         id = req.body.id
         email = req.body.email
