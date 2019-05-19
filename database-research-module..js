@@ -32,7 +32,7 @@ function getMood(req, res){
                     objs = [];
                     objs.push({username: result[0].username, emotion: emotion})
                     res.status(201).send(objs)
-                    console.log("Token: " + token + " Username: " + result[0].username + ", get emotion complete.")
+                    console.log("Token: " + token + " Username: " + result[0].username + ", get emotion complete.x")
                     close(conn)
             }).catch(err =>{
 

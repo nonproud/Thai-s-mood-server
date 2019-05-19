@@ -41,12 +41,11 @@ module.exports = {
 function createAccount(req, res) {
     bcrypt.genSalt(saltRounds, (err, salt) => {
         bcrypt.hash(req.body.password, salt, (err, hash) => {
-            var otp = generateOTP(), email = req.body.email
-            username = req.body.username
-            var values = "'" + username + "', '" + email + "', '" + hash + "', '" + otp + "', " + 0;
-
+        
             pool.getConnection().then(conn => {
-
+                otp = generateOTP(), email = req.body.email
+                username = req.body.username
+                values = "'" + username + "', '" + email + "', '" + hash + "', '" + otp + "', " + 0;
                 conn.query("INSERT INTO login (username, email, password, otp, is_verified) VALUES (" + values + ");").then((result) => {
                     mail_sender.sendValidateMail(email, otp)
                     res.status(201).send(username)
@@ -95,7 +94,7 @@ function createAccountProfile(req, res) {
     is_treat = body.is_treat
     hospital = body.hospital
     hn = body.hn
-    emer_cont = body.emergency_contact
+    gaemer_cont = body.emergency_contact
 
     var value = "'" + id + "', " + name + "', " + lname + "', " + gender + "', " + type + "', " + is_pregnant + "', " + addiction +
         "', " + caffeine + "', " + disorder + "', " + is_treat + "', " + hospital + "', " + hn + "', " + emer_cont
