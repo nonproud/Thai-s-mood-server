@@ -33,7 +33,8 @@ module.exports = {
     getAccountProfile: getAccountProfile,
     updateLoginDetails: updateLoginDetails,
     verifyOTP: verifyOTP,
-    checkIsEmailDuplicate: checkIsEmailDuplicate
+    checkIsEmailDuplicate: checkIsEmailDuplicate,
+    checkIsUsernameDuplicate: checkIsUsernameDuplicate
 
 }
 
@@ -41,14 +42,14 @@ function createAccount(req, res) {
     bcrypt.genSalt(saltRounds, (err, salt) => {
         bcrypt.hash(req.body.password, salt, (err, hash) => {
             var otp = generateOTP(), email = req.body.email
-            var values = "'" + email + "', '" + hash + "', '" + otp + "', " + 0;
+            username = req.body.username
+            var values = "'" + username + "', '" + email + "', '" + hash + "', '" + otp + "', " + 0;
 
             pool.getConnection().then(conn => {
 
-                conn.query("INSERT INTO login (email, password, otp, is_verified) VALUES (" + values + ");").then((result) => {
-                    console.log(id)
+                conn.query("INSERT INTO login (username, email, password, otp, is_verified) VALUES (" + values + ");").then((result) => {
                     mail_sender.sendValidateMail(email, otp)
-                    res.status(201).send(id)
+                    res.status(201).send(username)
                     conn.end()
                 }).catch(err => {
                     console.log(err)
@@ -81,20 +82,20 @@ function getSecret() {
 }
 
 function createAccountProfile(req, res) {
-    var body = req.body
-    var id = body.userID
-    var name = body.name
-    var lname = body.lastname
-    var gender = body.gender
-    var type = body.type
-    var is_pregnant = body.is_pregnant
-    var addiction = body.addiction
-    var caffeine = body.caffeine
-    var disorder = body.disorder
-    var is_treat = body.is_treat
-    var hospital = body.hospital
-    var hn = body.hn
-    var emer_cont = body.emergency_contact
+    body = req.body
+    id = body.userID
+    name = body.name
+    lname = body.lastname
+    gender = body.gender
+    type = body.type
+    is_pregnant = body.is_pregnant
+    addiction = body.addiction
+    caffeine = body.caffeine
+    disorder = body.disorder
+    is_treat = body.is_treat
+    hospital = body.hospital
+    hn = body.hn
+    emer_cont = body.emergency_contact
 
     var value = "'" + id + "', " + name + "', " + lname + "', " + gender + "', " + type + "', " + is_pregnant + "', " + addiction +
         "', " + caffeine + "', " + disorder + "', " + is_treat + "', " + hospital + "', " + hn + "', " + emer_cont
@@ -264,6 +265,25 @@ function checkIsEmailDuplicate(req, res) {
             } else {
                 res.status(201).send("1")
                 console.log("Email: " + email + " is duplicate.")
+            }
+            conn.end();
+        }).catch(err => {
+            res.status(502).send("Can't complete your request righnow, try again later.")
+        })
+    })
+}
+
+function checkIsUsernameDuplicate(req, res) {
+    username = req.body.username
+    pool.getConnection().then(conn => {
+        var sql = "SELECT * FROM login WHERE username = '" + username + "'"
+        conn.query(sql).then(result => {
+            if (!result.length) {
+                res.status(201).send("0")
+                console.log("Username: " + username + " is not duplicate.")
+            } else {
+                res.status(201).send("1")
+                console.log("Username: " + username + " is duplicate.")
             }
             conn.end();
         }).catch(err => {

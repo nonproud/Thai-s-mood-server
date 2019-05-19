@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require("body-parser")
-const database = require('./database-module')
+const database = require('./database-member-module')
 
 const app = express()
 
@@ -39,6 +39,10 @@ app.post("/member/otp", (req, res) => {
 
 app.post("/member/email", (req, res) => {
     database.checkIsEmailDuplicate(req, res)
+})
+
+app.post("/member/username", (req, res) => {
+    database.checkIsUsernameDuplicate(req, res)
 })
 /********************************** End of Finished ******************/
 

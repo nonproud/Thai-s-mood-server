@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer')
-const database = require('./database-module')
+const database = require('./database-member-module')
 /* Gmail config */
 const transporter = nodemailer.createTransport({
     service: 'gmail',
