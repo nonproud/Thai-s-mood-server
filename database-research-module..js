@@ -17,40 +17,53 @@ module.exports = {
 }
 
 
-function getMood(req, res){
-    token = req.query.token
-    console.log("Find someone with token: " + token)
+function getUsername(token, callback){
+    
     getUsernameQueryString = "SELECT username FROM login WHERE token = '" + token + "'"
-    pool.getConnection().then(conn => {
-        conn.query(getUsernameQueryString).then((result) => {
-            usermane = result[0].username
-            console.log("Token " + token + " is" + result[0].username)
-            
-            getmood_query = "SELECT emotion, level, date FROM emotion WHERE username = '" + result[0].username + "'"
-            console.log(getmood_query)
-            conn.query(getmood_query).then((emotion) => {
-                    objs = [];
-                    objs.push({username: result[0].username, emotion: emotion})
-                    res.status(201).send(objs)
-                    console.log("Token: " + token + " Username: " + result[0].username + ", get emotion complete.x")
-                    close(conn)
-            }).catch(err =>{
-
-            })    
-
+    return pool.getConnection().then((conn) => {
+        conn.query(getUsernameQueryString).then(result => {
+            uname = result[0].username
+            console.log("sql " + uname )
+            conn.close()
+            return callback(null, uname)
         }).catch(err => {
-        
+            return callback(err, null)
         })
 
     })
     
     
+}
+
+function getMood(req, res){
+    token = req.query.token
+    console.log("Looking for token: " + token)
+    uname =  getUsername(token, (err, username) => {
+        if(err)
+        throw err
+        console.log("Found token: " + token + " is: " + username)
+        // SELECT emotion, level, date FROM emotion WHERE username = 'nonproud' ORDER BY date ASC
+        getMood_sql = "SELECT emotion, level, date FROM emotion WHERE username = '" + username +
+            "' ORDER BY date ASC;"
+
+        return pool.getConnection().then(conn => {
+            conn.query(getMood_sql).then(err, result =>{
+                if(err)
+                    throw err;
+                objs = [];
+                    objs.push({username: username, emotion: result})
+                    res.status(201).send(objs)
+                    console.log("Complete tranfer emotion for: " + token + " username: " + username + " :P")
+                    close(conn)
+            }).catch(err => {
+                res.status(502).send("OPPS!")
+            })
+        })
+        
+    })
+    
+   
     
 
 }
 
-function getUsername(token, callback){
-    getUsernameQueryString = "SELECT username FROM login WHERE token = '" + token + "'"
-    
-    
-}

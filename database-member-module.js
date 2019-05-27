@@ -39,90 +39,89 @@ module.exports = {
 }
 
 function createAccount(req, res) {
-    bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(req.body.password, salt, (err, hash) => {
-        
-            pool.getConnection().then(conn => {
-                otp = generateOTP(), email = req.body.email
-                username = req.body.username
-                values = "'" + username + "', '" + email + "', '" + hash + "', '" + otp + "', " + 0;
-                conn.query("INSERT INTO login (username, email, password, otp, is_verified) VALUES (" + values + ");").then((result) => {
-                    mail_sender.sendValidateMail(email, otp)
-                    res.status(201).send(username)
-                    conn.end()
-                }).catch(err => {
-                    console.log(err)
-                    res.status(502).send("Cant create user profile now, Try again later.")
-                })
-            })
-
-        })
-    })
-}
-
-function getNewOTP(req, res) {
-    var newotp = generateOTP()
-    var id = req.body.id
-    var email = req.body.email
     pool.getConnection().then(conn => {
-        var sql = "UPDATE login SET email = '" + email + "', otp = '" + newotp + "' WHERE id = '" + id + "'"
-        conn.query(sql).then((result) => {
+        otp = generateOTP()
+        email = req.body.email
+        username = req.body.username
+        password = req.body.password
+        values = "'" + username + "', '" + email + "', SHA2('" + password + "', 256), '" + otp + "', " + 0;
+        conn.query("INSERT INTO login (username, email, password, otp, is_verified) VALUES (" + values + ");").then((result) => {
             mail_sender.sendValidateMail(email, otp)
-            res.status(201).send("Successfully.")
+            res.status(201).send(username)
             conn.end()
         }).catch(err => {
-            res.status(502).send("Failed")
+            console.log(err)
+            res.status(502).send("Cant create user profile now, Try again later.")
         })
     })
-}
-
-function getSecret() {
-    return SECRET
 }
 
 function createAccountProfile(req, res) {
-    body = req.body
-    id = body.userID
-    name = body.name
-    lname = body.lastname
-    gender = body.gender
-    type = body.type
-    is_pregnant = body.is_pregnant
-    addiction = body.addiction
-    caffeine = body.caffeine
-    disorder = body.disorder
-    is_treat = body.is_treat
-    hospital = body.hospital
-    hn = body.hn
-    gaemer_cont = body.emergency_contact
+    type = req.body.type
+    sql_insert = ""
+    if(type == "g"){
+        username = req.body.username
+        dob = req.body.dob
+        is_caffeine_addict = req.body.is_caffeine_addict
+        is_drug_addict = req.body.is_drug_addict
+        
+        sql_insert = "INSERT INTO `user_profile_general`" +
+        "(`username`, `dob`, `is_caffeine`, `is_drug_addict`, `created`, `last_modified`) VALUES (" +
+        "'" + username + "', '" + dob + "', " +is_caffeine_addict + ", " + is_drug_addict + ", " +
+        "now(), now());"
 
-    var value = "'" + id + "', " + name + "', " + lname + "', " + gender + "', " + type + "', " + is_pregnant + "', " + addiction +
-        "', " + caffeine + "', " + disorder + "', " + is_treat + "', " + hospital + "', " + hn + "', " + emer_cont
+    }else if(type == "p"){
+        username = req.body.username
+        sex = req.body.sex
+        is_pregnant = req.body.is_pregnant
+        dob = req.body.dob
+        weight = req.body.weight
+        height = req.body.height
+        bmi = req.body.bmi
+        is_caffeine_addict = req.body.is_caffeine_addict
+        is_drug_addict = req.body.is_drug_addict
+        disease = req.body.disease
+        sql_insert = "INSERT INTO `user_profile_patient`" +   
+        "(`username`, `sex`, `is_pregnant`, `dob`, `weight`, `height`, `bmi`, `is_caffeine`, `is_drug_addict`, `disease`, `created`, `last_modified`)" +
+        "VALUES (" +
+        "'" + username + "', '" + sex + "', " + is_pregnant + ", '"+ dob + "', " + weight + ", " +
+        height + ", " + bmi + ", " + is_caffeine_addict + ", " + is_drug_addict + ", '" + disease + "', now(), now());"
+    }else{
+        res.status(404).send("Error! your user's type is wrong.")
+    }
 
-    pool.getConnection().then(conn => {
-        var sql = "INSERT INTO user_profile" +
-            "(id, name, lastname, gender, type, is_pregnant, addiction, caffeine, disorder, is_treat, hospital, hn, emergency_contact)" +
-            "VALUES (" + value + ")"
-        conn.query(sql).then((result) => {
-            res.status(201).send("Insert " + name + "'s profile successfully.")
+    pool.getConnection().then(conn =>{
+        conn.query(sql_insert).then(result => {
+            console.log(result)
+            res.status(201).send("1")
             conn.end()
-        }).catch(err => {
-            res.status(502).send("Cant create user profile now, Try again later.")
+        }).catch(err =>{
+            console.log(err)
+            res.status(502).send("0")
         })
-
     })
 }
 
 function getAccountProfile(req, res) {
-    var userID = req.body.id
+    let type = req.query.type
+    let username = req.query.username
+    console.log("type: " + type + " username: " + username)
+    sql_select = ""
+
+    if(type == "g"){
+        sql_select = "SELECT * FROM `user_profile_general` WHERE username = '" + username + "';"
+    }else if(type == "p"){
+        sql_select = "SELECT * FROM `user_profile_patient` WHERE username = '" + username + "';"
+    }else{
+        res.status(404).send("Error! your user's type is wrong.")
+    }
+
     pool.getConnection().then(conn => {
-        var sql = "SELECT * FROM user_profile WHERE id = '" + userID + "'"
-        conn.query(sql).then((result) => {
-            console.log(result)
-            res.status(201).send(result)
+        conn.query(sql_select).then((result) => {
+            res.status(201).send(result[0])
             conn.end()
         }).catch(err => {
-            res.status(502).send("Cant create user profile now, Try again later.")
+            res.status(502).send("Cant get user profile now, Try again later.")
         })
 
     })
@@ -172,25 +171,19 @@ function updateLoginDetails(req, res) {
 
 function authLogin(req, res) {  
     pool.getConnection().then(conn => {
-        id = req.body.id
+        username = req.body.username
         email = req.body.email
         password = req.body.password
-        conn.query("SELECT * FROM login WHERE email = '" + email + "';")
+        conn.query("SELECT * FROM login WHERE (email = '" + email + "' OR username ='" + username + 
+        "') AND password = SHA2('" + password + "', 256);")
             .then((result) => {
-                var payload = {
-                    id: result[0].id,
-                    email: result[0].email,
-                    is_verified: result[0].is_verified,
-                    iat: new Date()
+            
+                if(result[0] === undefined){
+                    res.status(201).send("0")
+                }else{
+                    const jwt = getJWT(result[0].username, result[0].email, result[0].is_verified)
+                    res.status(201).send(jwt)
                 }
-                bcrypt.compare(password, result[0].password, (err, result) => {
-                    if (err) throw err
-                    if (result) {
-                        res.send(jwt.encode(payload, SECRET))
-                    } else {
-                        res.send("0")
-                    }
-                })
                 conn.end()
             }).catch(err => {
                 console.log(err)
@@ -211,7 +204,10 @@ function verifyOTP(req, res) {
                 conn.end()
             } else {
                 console.log("Email " + email + " verify status: success")
-                res.status(201).send("1")
+                
+                const jwt = getJWT(result[0].username, result[0].email, 1)
+
+                res.status(201).send(jwt)
                 pool.getConnection().then(conn => {
                     var sql2 = "UPDATE login SET is_verified = 1 WHERE email = '" + email + "'"
                     conn.query(sql2).then(result => {
@@ -233,16 +229,6 @@ function verifyOTP(req, res) {
 
 }
 
-function generateID() {
-    var id = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (var i = 0; i < 20; i++)
-        id += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return id;
-}
-
 function generateOTP() {
     var otp = "";
     var possible = "0123456789";
@@ -251,6 +237,22 @@ function generateOTP() {
         otp += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return otp;
+}
+
+function getNewOTP(req, res) {
+    var newotp = generateOTP()
+    var id = req.body.id
+    var email = req.body.email
+    pool.getConnection().then(conn => {
+        var sql = "UPDATE login SET email = '" + email + "', otp = '" + newotp + "' WHERE id = '" + id + "'"
+        conn.query(sql).then((result) => {
+            mail_sender.sendValidateMail(email, otp)
+            res.status(201).send("Successfully.")
+            conn.end()
+        }).catch(err => {
+            res.status(502).send("Failed")
+        })
+    })
 }
 
 function checkIsEmailDuplicate(req, res) {
@@ -289,4 +291,18 @@ function checkIsUsernameDuplicate(req, res) {
             res.status(502).send("Can't complete your request righnow, try again later.")
         })
     })
+}
+
+function getJWT(username, email, is_verified){
+    var payload = {
+        username: username,
+        email: email,
+        is_verified: is_verified,
+        iat: new Date()
+    }
+    return jwt.encode(payload, getSecret())
+}
+
+function getSecret() {
+    return SECRET
 }
