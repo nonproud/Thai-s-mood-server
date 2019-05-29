@@ -52,6 +52,7 @@ function createAccount(req, res) {
         }).catch(err => {
             console.log(err)
             res.status(502).send("Cant create user profile now, Try again later.")
+            conn.end()
         })
     })
 }
@@ -182,7 +183,7 @@ function authLogin(req, res) {
                     res.status(201).send("0")
                 }else{
                     const jwt = getJWT(result[0].username, result[0].email, result[0].is_verified)
-                    res.status(201).send(jwt)
+                    res.status(201).send(jwt+","+result[0].username+","+result[0].email+","+result[0].is_verified)
                 }
                 conn.end()
             }).catch(err => {
