@@ -62,7 +62,7 @@ function createAccountProfile(req, res) {
         conn.end()
     })
 
-    if(type == "g"){
+    if(type === "g"){
         username = req.body.username
         dob = req.body.dob
         is_caffeine_addict = req.body.is_caffeine_addict
@@ -73,7 +73,7 @@ function createAccountProfile(req, res) {
         "'" + username + "', '" + dob + "', " +is_caffeine_addict + ", " + is_drug_addict + ", " +
         "now(), now());"
 
-    }else if(type == "p"){
+    }else if(type === "p"){
         username = req.body.username
         sex = req.body.sex
         is_pregnant = req.body.is_pregnant
