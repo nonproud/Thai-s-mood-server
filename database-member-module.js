@@ -70,7 +70,7 @@ function createAccountProfile(req, res) {
         
         sql_insert = "INSERT INTO `user_profile_general`" +
         "(`username`, `dob`, `is_caffeine`, `is_drug_addict`, `created`, `last_modified`) VALUES (" +
-        "'" + username + "', '" + dob + "', " +is_caffeine_addict + ", " + is_drug_addict + ", " +
+        "'" + username + "', '" + dob + "', " + is_caffeine_addict + ", " + is_drug_addict + ", " +
         "now(), now());"
 
     }else if(type === "p"){

@@ -33,8 +33,8 @@ app.post("/member/profile", (req, res) => {
 })
 /**************************** end of /member/profile *****************/
 
-app.post("/member/otp", (req, res) => {
-    database.verifyOTP(req, res)
+app.post("/member/verifyEmail", (req, res) => {
+    database.verifyEmail(req, res)
 })
 
 app.post("/member/email", (req, res) => {
