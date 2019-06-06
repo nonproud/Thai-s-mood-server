@@ -20,7 +20,6 @@ const saltRounds = 15
 const mail_sender = require('./mail-sender')
 
 module.exports = {
-    getSecret: getSecret,
     authLogin: authLogin,
     createAccount: createAccount,
     getNewVerifyPassword: getNewVerifyPassword,
