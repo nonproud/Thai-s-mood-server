@@ -8,21 +8,16 @@ const pool = mariadb.createPool({
     database: 'thaismood',
     connectionLimit: 5
 });
-const jwt = require("jwt-simple")
+const jwt_module = require("./jwt-module")
+
 
 const expressSchema = require('express-schema'),
     schemas = expressSchema.schemas,
     Schema = expressSchema.Schema;
-// var payloadschema = new Schema({
-//     id: schemas.string.length(20, 20).require(), // foo should between 3~5, and not undefined.
-//     emai: schemas.string.length(0, 100).require(),
-//     is_verified: schemas.required(),
-//     iat: schemas.string.required() 
-//     });
+
 const bcrypt = require('bcrypt')
 const saltRounds = 15
 const mail_sender = require('./mail-sender')
-const SECRET = "this is a real thai's mood server!"
 
 module.exports = {
     getSecret: getSecret,
@@ -178,8 +173,7 @@ function authLogin(req, res) {
                 if(result[0] === undefined){
                     res.status(201).send("0")
                 }else{
-                    const jwt = getJWT(result[0].username, result[0].email, result[0].is_verified)
-                    res.status(201).send(jwt+","+result[0].username+","+result[0].email+","+result[0].is_verified)
+                    jwt_module.getAndSentToken(result[0].username, result[0].email, result[0].is_verified, res)
                 }
                 conn.end()
             }).catch(err => {
@@ -201,10 +195,10 @@ function verifyEmail(req, res) {
                 conn.end()
             } else {
                 console.log("Email " + email + " verify status: success")
-                
-                const jwt = getJWT(result[0].username, result[0].email, 1)
 
-                res.status(201).send(jwt)
+                
+                jwt_module.getAndSentToken(result[0].username, result[0].email, 1, res)
+
                 pool.getConnection().then(conn => {
                     var sql2 = "UPDATE login SET is_verified = 1 WHERE email = '" + email + "'"
                     conn.query(sql2).then(result => {
@@ -290,18 +284,4 @@ function checkIsUsernameDuplicate(req, res) {
         })
         conn.end()
     })
-}
-
-function getJWT(username, email, is_verified){
-    var payload = {
-        username: username,
-        email: email,
-        is_verified: is_verified,
-        iat: new Date()
-    }
-    return jwt.encode(payload, getSecret())
-}
-
-function getSecret() {
-    return SECRET
 }
