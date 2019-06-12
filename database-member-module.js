@@ -26,7 +26,8 @@ module.exports = {
     updateLoginDetails: updateLoginDetails,
     verifyEmail: verifyEmail,
     checkIsEmailDuplicate: checkIsEmailDuplicate,
-    checkIsUsernameDuplicate: checkIsUsernameDuplicate
+    checkIsUsernameDuplicate: checkIsUsernameDuplicate,
+    getTempPassword: getTempPassword
 
 }
 
@@ -65,17 +66,21 @@ function createAccountProfile(req, res) {
 
     if(type === "g"){
         username = req.body.username
+        nickname = req.body.nickname
+        emergency_contact = req.body.emergency_contact
         dob = req.body.dob
         is_caffeine_addict = req.body.is_caffeine_addict
         is_drug_addict = req.body.is_drug_addict
         
-        sql_insert = "INSERT INTO `user_profile_general`" +
-        "(`username`, `dob`, `is_caffeine`, `is_drug_addict`, `created`, `last_modified`) VALUES (" +
-        "'" + username + "', '" + dob + "', " + is_caffeine_addict + ", " + is_drug_addict + ", " +
+        sql_insert = "INSERT INTO user_profile_general" +
+        "(username, nickname, emergency_contact, dob, is_caffeine, is_drug_addict, created, last_modified) VALUES (" +
+        "'" + username + "', '" + nickname + "', '" + emergency_contact + "', '"+ dob + "', " + is_caffeine_addict + ", " + is_drug_addict + ", " +
         "now(), now());"
 
     }else if(type === "p"){
         username = req.body.username
+        nickname = req.body.nickname
+        emergency_contact = req.body.emergency_contact
         sex = req.body.sex
         is_pregnant = req.body.is_pregnant
         dob = req.body.dob
@@ -84,12 +89,18 @@ function createAccountProfile(req, res) {
         bmi = req.body.bmi
         is_caffeine_addict = req.body.is_caffeine_addict
         is_drug_addict = req.body.is_drug_addict
-        disease = req.body.disease
-        sql_insert = "INSERT INTO `user_profile_patient`" +   
-        "(`username`, `sex`, `is_pregnant`, `dob`, `weight`, `height`, `bmi`, `is_caffeine`, `is_drug_addict`, `disease`, `created`, `last_modified`)" +
+        d1 = req.body.d1
+        d2 = req.body.d2
+        d3 = req.body.d3
+        d4 = req.body.d4
+        d5 = req.body.d5
+        d6 = req.body.d6
+        sql_insert = "INSERT INTO user_profile_patient" +   
+        "(username, nickname, emergency_contact, dob, sex, is_pregnant, weight, height, bmi, is_caffeine, is_drug_addict, d1, d2, d3, d4, d5, d6, created, last_modified)" +
         "VALUES (" +
-        "'" + username + "', '" + sex + "', " + is_pregnant + ", '"+ dob + "', " + weight + ", " +
-        height + ", " + bmi + ", " + is_caffeine_addict + ", " + is_drug_addict + ", '" + disease + "', now(), now());"
+        "'" + username + "', '" + nickname + "', '" + emergency_contact + "', '" + dob + "', '" + sex + "', " + is_pregnant + ", " + weight + ", " +
+        height + ", " + bmi + ", " + is_caffeine_addict + ", " + is_drug_addict + ", " + d1 + ", " + 
+        d2 + ", " + d3 + ", " + d4 + ", " + d5 + ", '" + d6 + "', now(), now());"
     }else{
         res.status(404).send("Error! your user's type is wrong.")
     }
@@ -113,9 +124,9 @@ function getAccountProfile(req, res) {
     sql_select = ""
 
     if(type == "g"){
-        sql_select = "SELECT * FROM `user_profile_general` WHERE username = '" + username + "';"
+        sql_select = "SELECT * FROM user_profile_general WHERE username = '" + username + "';"
     }else if(type == "p"){
-        sql_select = "SELECT * FROM `user_profile_patient` WHERE username = '" + username + "';"
+        sql_select = "SELECT * FROM user_profile_patient WHERE username = '" + username + "';"
     }else{
         res.status(404).send("Error! your user's type is wrong.")
     }
@@ -123,11 +134,12 @@ function getAccountProfile(req, res) {
     pool.getConnection().then(conn => {
         conn.query(sql_select).then((result) => {
             res.status(201).send(result[0])
-            
+            conn.end()
         }).catch(err => {
             res.status(502).send("Cant get user profile now, Try again later.")
+            conn.end()
         })
-        conn.end()
+        
     })
 }
 
@@ -138,41 +150,53 @@ function updateLoginDetails(req, res) {
     var status = false
 
     if (email != "NULL") {
-        var newVerifypassword = generateVerifypassword()
+        newVerifypassword = generateVerifypassword()
         pool.getConnection().then(conn => {
-            var sql = "UPDATE login SET email = '" + email + "', verify_password = '" + newVerifypassword + "' WHERE username = '" + username + "'"
+            sql = "UPDATE login SET email = '" + email + "', verify_password = '" + newVerifypassword + "' WHERE username = '" + username + "'"
             conn.query(sql).then((result) => {
                 mail_sender.sendValidateMail(email, newVerifypassword)
                 stauts = true
+                conn.end()
             }).catch(err => {
                 stauts = false
+
+                conn.end()
             })
-            conn.end()
         })
 
     } else if (passwd != "NULL") {
-        
+        sql = "UPDATE login set password = SHA2('" + password + "', 256) WHERE username = '" + username + "';"
+        pool.getConnection().then(conn => {
+            conn.query(sql).then(result => {
+                stauts = true
+                conn.end()
+            }).catch(err => {
+                stauts = false
+                conn.end()
+            })
+        })
     }
 
     if (status) {
-        res.status(201).send("Update detials Successfully.")
+        res.status(201).send("1.")
     } else {
         res.status(502).send("Unable to update detials, Please try again later.")
     }
 }
 
-function authLogin(req, res) {  
+function authLogin(req, res) { 
+    username = req.body.username
+    email = req.body.email
+    password = req.body.password
+    sql = "SELECT * FROM login WHERE (email = '" + email + "' OR username ='" + username + 
+        "') AND password = SHA2('" + password + "', 256);"
     pool.getConnection().then(conn => {
-        username = req.body.username
-        email = req.body.email
-        password = req.body.password
-        conn.query("SELECT * FROM login WHERE (email = '" + email + "' OR username ='" + username + 
-        "') AND password = SHA2('" + password + "', 256);")
-            .then((result) => {
-            
+        conn.query(sql).then((result) => {
+    
                 if(result[0] === undefined){
                     res.status(201).send("0")
                 }else{
+                    console.log(username + ":" + email + "login successfully at " + new Date())
                     jwt_module.getAndSentToken(result[0].username, result[0].email, result[0].is_verified, res)
                 }
                 conn.end()
@@ -195,7 +219,6 @@ function verifyEmail(req, res) {
                 conn.end()
             } else {
                 console.log("Email " + email + " verify status: success")
-
                 jwt_module.getAndSentToken(result[0].username, result[0].email, 1, res)
 
                 pool.getConnection().then(conn => {
@@ -219,11 +242,40 @@ function verifyEmail(req, res) {
 
 }
 
+function getTempPassword(req, res){
+    username = req.query.username
+    otp = generateTempPassword()
+    sql = "UPDATE login SET otp = '" + otp + "' WHERE username = '" + username + "';"
+    pool.getConnection().then(conn =>{
+        conn.query(sql).then(result => {
+            if(result.length){
+                res.status(201).send(otp)
+            }else{
+                res.status(403).send("Can't done your request.")
+            }
+            conn.end()
+        }).catch(err => {
+            res.status(502).send("Can't done your request.")
+            conn.end()
+        })
+    })
+}
+
 function generateVerifypassword() {
     var password = "";
     var possible = "0123456789";
 
     for (var i = 0; i < 4; i++)
+        password += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return password;
+}
+
+function generateTempPassword() {
+    var password = "";
+    var possible = "0123456789";
+
+    for (var i = 0; i < 6; i++)
         password += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return password;

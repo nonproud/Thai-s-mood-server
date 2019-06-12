@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require("body-parser")
 const database = require('./database-member-module')
+const jwt = require('./jwt-module')
 
 const app = express()
 
@@ -24,7 +25,7 @@ app.put('/member', (req, res) =>{
 /**************************** end of /member *************************/
 
 /**************************** /member/profile ************************/
-app.get("/member/profile", (res, req) => {
+app.get("/member/profile", jwt.verifyToken, (res, req) => {
     database.getAccountProfile(req, res)
 })
 
@@ -48,14 +49,17 @@ app.post("/member/username", (req, res) => {
 
 
 
-app.put('/member/profile', (req, res) =>{
-    res.send('meber/data!')
+app.put('/member/profile', jwt.verifyToken, (req, res) =>{
+    res.send('meber/data')
 })
 
 app.post("/member/login", (req, res) => {
     database.authLogin(req, res)
 })
 
+app.get("member/tempPassword", jwt.verifyToken, (req, res) =>{
+    database.getTempPassword(req, res)
+})
 
  
 app.listen(4553, () =>{

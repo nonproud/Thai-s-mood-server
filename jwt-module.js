@@ -48,8 +48,8 @@ function getAndSentToken(username, email, is_verified, res){
     res.json({
       token,
       "username": username,
-      "email": "panphinit@gmail.com",
-      "is_verified": "1"
+      "email": email,
+      "is_verified": is_verified
     });
   });
 
