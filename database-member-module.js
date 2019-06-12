@@ -56,8 +56,9 @@ function createAccount(req, res) {
 function createAccountProfile(req, res) {
     type = req.body.type
     sql_insert = ""
-
-    sql_update_usertpye_in_login_table = "UPDATE login SET type = '" + type + "';"
+    username = req.body.username
+    sql_update_usertpye_in_login_table = "UPDATE login SET type = '" + type +
+     "' WHRER username = '" + username +"';"
 
     pool.getConnection().then(conn => {
         conn.query(sql_update_usertpye_in_login_table)
@@ -65,7 +66,6 @@ function createAccountProfile(req, res) {
     })
 
     if(type === "g"){
-        username = req.body.username
         nickname = req.body.nickname
         emergency_contact = req.body.emergency_contact
         dob = req.body.dob
@@ -78,7 +78,6 @@ function createAccountProfile(req, res) {
         "now(), now());"
 
     }else if(type === "p"){
-        username = req.body.username
         nickname = req.body.nickname
         emergency_contact = req.body.emergency_contact
         sex = req.body.sex

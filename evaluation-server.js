@@ -27,5 +27,5 @@ app.get("evaluation", jwtModule.verifyToken, (req, res) =>{
 })
 
 app.listen(6553, () =>{
-    console.log("Thais Mood 'Evaluation' API was ran on PORT 5553;")
+    console.log("Thais Mood 'Evaluation' API was ran on PORT 6553;")
 })
