@@ -6,7 +6,7 @@ const pool = mariadb.createPool({
     user: 'api',
     password: 'password',
     database: 'thaismood',
-    connectionLimit: 5
+    connectionLimit: 1000
 });
 const jwt_module = require("./jwt-module")
 
@@ -15,8 +15,6 @@ const expressSchema = require('express-schema'),
     schemas = expressSchema.schemas,
     Schema = expressSchema.Schema;
 
-const bcrypt = require('bcrypt')
-const saltRounds = 15
 const mail_sender = require('./mail-sender')
 
 module.exports = {
@@ -39,15 +37,18 @@ function createAccount(req, res) {
         username = req.body.username
         password = req.body.password
         values = "'" + username + "', '" + email + "', SHA2('" + password + "', 256), '" + verifyPassword + "', " + 0;
-        conn.query("INSERT INTO login (username, email, password, verify_password, is_verified) VALUES (" + values + ");").then((result) => {
+        sql = "INSERT INTO login (username, email, password, verify_password, is_verified) VALUES (" + values + ");"
+        conn.query(sql).then((result) => {
             mail_sender.sendValidateMail(email, verifyPassword)
             res.status(201).send(username)
+            conn.end()
             
         }).catch(err => {
             console.log(err)
             res.status(502).send("Cant create user profile now, Try again later.")
+            conn.end()
         })
-        conn.end()
+        
     })
 }
 
@@ -195,7 +196,6 @@ function verifyEmail(req, res) {
             } else {
                 console.log("Email " + email + " verify status: success")
 
-                
                 jwt_module.getAndSentToken(result[0].username, result[0].email, 1, res)
 
                 pool.getConnection().then(conn => {
