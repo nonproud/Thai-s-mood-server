@@ -109,11 +109,12 @@ function createAccountProfile(req, res) {
         conn.query(sql_insert).then(result => {
             console.log(result)
             res.status(201).send("1")
+            conn.end()
         }).catch(err =>{
             console.log(err)
             res.status(502).send("0")
+            conn.end()
         })
-        conn.end()
     })
 }
 
@@ -221,13 +222,14 @@ function verifyEmail(req, res) {
                 console.log("Email " + email + " verify status: success")
                 jwt_module.getAndSentToken(result[0].username, result[0].email, 1, res)
 
-                pool.getConnection().then(conn => {
+                pool.getConnection().then(conn2 => {
                     var sql2 = "UPDATE login SET is_verified = 1 WHERE email = '" + email + "'"
-                    conn.query(sql2).then(result => {
+                    conn2.query(sql2).then(result => {
                         console.log("Email: " + email + " change verify status: success")
-                        conn.end()
+                        conn2.end()
                     }).catch(err => {
                         console.log("Email: " + email + " change verify status: failed")
+                        conn2.end()
                     })
                 })
                 conn.end()

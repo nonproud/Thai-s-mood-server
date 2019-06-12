@@ -12,7 +12,7 @@ app.get("/research/emotion", (req, res) => {
     database.getMood(req, res)
 })
 
-app.listen(6553, () =>{
+app.listen(7553, () =>{
     console.log("Thais Mood 'Research' API was ran on PORT 6553;")
 })
 

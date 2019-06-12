@@ -44,10 +44,12 @@ function createMood(req, res){
     pool.getConnection().then(conn => {
         conn.query(sql_insert_mood_record).then(result => {
             res.status(201).send("1")
+            conn.end()
         }).catch(err => {
             res.status(502).send("err")
+            conn.end()
         })
-        conn.end()
+
     })
 }
 
@@ -57,10 +59,11 @@ function editMood(req, res){
     pool.getConnection().then(conn =>{
         conn.query(sql_update_mood_record).then(result => {
             res.status(201).send("1")
+            conn.end()
         }).catch(err => {
             res.status(502).send("err")
+            conn.end()
         })
-        conn.end()
     })
 }
 
@@ -69,10 +72,11 @@ function deleteMood(req, res){
     pool.getConnection().then(conn =>{
         conn.query(sql_delete_mood).then(result => {
             res.status(201).send("1")
+            conn.end()
         }).catch(err => {
             res.status(502).send("err")
+            conn.end()
         })
-        conn.end()
     })
 }
 
@@ -91,10 +95,11 @@ function createSleep(req, res){
     pool.getConnection().then(conn => {
         conn.query(sql_insert_sleep_record).then(result => {
             res.status(201).send("1")
+            conn.end()
         }).catch(err => {
             res.status(502).send("err")
+            conn.end()
         })
-        conn.end()
     })
 }
 
@@ -105,10 +110,11 @@ function editSleep(req, res){
     pool.getConnection().then(conn =>{
         conn.query(sql_update_sleep_record).then(result => {
             res.status(201).send("1")
+            conn.end()
         }).catch(err => {
             res.status(502).send("err")
+            conn.end()
         })
-        conn.end()
     })
 }
 
@@ -117,10 +123,11 @@ function deleteSleep(req, res){
     pool.getConnection().then(conn =>{
         conn.query(sql_delete_mood).then(result => {
             res.status(201).send("1")
+            conn.end()
         }).catch(err => {
             res.status(502).send("err")
+            conn.end()
         })
-        conn.end()
     })
 }
 
@@ -138,10 +145,11 @@ function createDiary(req, res){
     pool.getConnection().then(conn => {
         conn.query(sql_insert_diary_record).then(result => {
             res.status(201).send("1")
+            conn.end()
         }).catch(err => {
             res.status(502).send("err")
+            conn.end()
         })
-        conn.end()
     })
 }
 
@@ -151,10 +159,12 @@ function editDiary(req, res){
     pool.getConnection().then(conn =>{
         conn.query(sql_update_diary_record).then(result => {
             res.status(201).send("1")
+            conn.end()
         }).catch(err => {
             res.status(502).send("err")
+            conn.end()
         })
-        conn.end()
+        
     })
 
 }
