@@ -6,7 +6,7 @@ const pool = mariadb.createPool({
     user: 'api',
     password: 'password',
     database: 'thaismood',
-    connectionLimit: 1000
+    connectionLimit: 20
 });
 const jwt_module = require("./jwt-module")
 
@@ -15,7 +15,8 @@ module.exports = {
     insert2q: insert2q,
     insert9q: insert9q,
     insert8q: insert8q,
-    insertMdq: insertMdq
+    insertMdq: insertMdq,
+    getEvaluation: getEvaluation
 }
 
 function insert2q(req, res){

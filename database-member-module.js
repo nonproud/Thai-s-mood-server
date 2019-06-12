@@ -6,7 +6,7 @@ const pool = mariadb.createPool({
     user: 'api',
     password: 'password',
     database: 'thaismood',
-    connectionLimit: 1000
+    connectionLimit: 20
 });
 const jwt_module = require("./jwt-module")
 
