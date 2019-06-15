@@ -7,7 +7,8 @@ const SECRET = "this is a real thai's mood server!"
 
 module.exports = {
   verifyToken: verifyToken,
-  getAndSentToken: getAndSentToken
+  getAndSentToken: getAndSentToken,
+  verifyTokenForGetMethod: verifyTokenForGetMethod
 }
 
 function verifyToken(req, res, next) {
@@ -35,21 +36,41 @@ function verifyToken(req, res, next) {
 
 }
 
-function getAndSentToken(username, email, is_verified, res){
+function verifyTokenForGetMethod(req, res, next) {
+
+  const bearerHeader = req.headers['authorization'];
+  
+  if(typeof bearerHeader !== 'undefined') {
+
+    jwt.verify(bearerHeader, getSecret(), (err, authData) => {
+      if(err) {
+        res.sendStatus(403);
+      } else {
+        next();        
+      }
+    });
+  } else {
+    // Forbidden
+    res.sendStatus(403);
+  }
+
+}
+
+function getAndSentToken(username, email, is_verified, type, res){
 
   const user = {
     username: username,
     email: email,
-    is_verified : is_verified,
-    iat: new Date()
+    is_verified : is_verified
   }
 
-  jwt.sign({user}, getSecret(),  (err, token) => {
+  jwt.sign(user, getSecret(),  (err, token) => {
     res.json({
       token,
       "username": username,
       "email": email,
-      "is_verified": is_verified
+      "is_verified": is_verified,
+      "type": type
     });
   });
 

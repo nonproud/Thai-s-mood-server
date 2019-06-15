@@ -40,7 +40,7 @@ function insert9q(req, res){
     score = req.body.score
     date = req.body.date
     username = req.body.username
-    sql = "UPDATE evaluation SET 9q = " + score + " WHRER username = '" + username + "' AND date = '" + date + "';"
+    sql = "UPDATE evaluation SET 9q = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
     pool.getConnection().then(conn =>{
         conn.query(sql).then(result => {
             res.status(201).send("1")
@@ -57,7 +57,7 @@ function insert8q(req, res){
     score = req.body.score
     date = req.body.date
     username = req.body.username
-    sql = "UPDATE evaluation SET 8q = " + score + " WHRER username = '" + username + "' AND date = '" + date + "';"
+    sql = "UPDATE evaluation SET 8q = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
     pool.getConnection().then(conn =>{
         conn.query(sql).then(result => {
             res.status(201).send("1")
@@ -74,7 +74,7 @@ function insertMdq(req, res){
     score = req.body.score
     date = req.body.date
     username = req.body.username
-    sql = "UPDATE evaluation SET mdq = " + score + " WHRER username = '" + username + "' AND date = '" + date + "';"
+    sql = "UPDATE evaluation SET mdq = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
     pool.getConnection().then(conn =>{
         conn.query(sql).then(result => {
             res.status(201).send("1")

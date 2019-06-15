@@ -10,10 +10,10 @@ const pool = mariadb.createPool({
 });
 const jwt = require("jwt-simple")
 
-const SECRET = "this is a real thai's mood server!"
 
 module.exports = {
-    getMood: getMood
+    getMood: getMood,
+    getHospital: getHospital
 }
 
 
@@ -67,3 +67,16 @@ function getMood(req, res){
 
 }
 
+function getHospital(req, res){
+    province = req.query.province
+    sql = "SELECT name, type, province, address FROM emergency WHERE province = '" + province + "';"
+    pool.getConnection().then(conn => {
+        conn.query(sql).then(result => {
+            res.status(201).send(result)
+            conn.end()
+        }).catch(err => {
+            res.status(502).send(err)
+        })
+    })
+
+}

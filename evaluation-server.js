@@ -22,7 +22,7 @@ app.post("/evaluation", jwtModule.verifyToken, (req, res) => {
     }
 })
 
-app.get("evaluation", jwtModule.verifyToken, (req, res) =>{
+app.get("evaluation", jwtModule.verifyTokenForGetMethod, (req, res) =>{
     getEvaluation(req, res)
 })
 

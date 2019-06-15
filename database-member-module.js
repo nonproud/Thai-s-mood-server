@@ -58,7 +58,7 @@ function createAccountProfile(req, res) {
     sql_insert = ""
     username = req.body.username
     sql_update_usertpye_in_login_table = "UPDATE login SET type = '" + type +
-     "' WHRER username = '" + username +"';"
+     "' WHERE username = '" + username + "';"
 
     pool.getConnection().then(conn => {
         conn.query(sql_update_usertpye_in_login_table)
@@ -104,6 +104,7 @@ function createAccountProfile(req, res) {
         res.status(404).send("Error! your user's type is wrong.")
     }
 
+    console.log("SQL: " + sql)
     pool.getConnection().then(conn =>{
         conn.query(sql_insert).then(result => {
             console.log(result)
@@ -118,8 +119,8 @@ function createAccountProfile(req, res) {
 }
 
 function getAccountProfile(req, res) {
-    let type = req.query.type
-    let username = req.query.username
+    type = req.query.type
+    username = req.query.username
     console.log("type: " + type + " username: " + username)
     sql_select = ""
 
@@ -197,7 +198,7 @@ function authLogin(req, res) {
                     res.status(201).send("0")
                 }else{
                     console.log(username + ":" + email + "login successfully at " + new Date())
-                    jwt_module.getAndSentToken(result[0].username, result[0].email, result[0].is_verified, res)
+                    jwt_module.getAndSentToken(result[0].username, result[0].email, result[0].is_verified, result[0].type, res)
                 }
                 conn.end()
             }).catch(err => {
@@ -219,7 +220,7 @@ function verifyEmail(req, res) {
                 conn.end()
             } else {
                 console.log("Email " + email + " verify status: success")
-                jwt_module.getAndSentToken(result[0].username, result[0].email, 1, res)
+                jwt_module.getAndSentToken(result[0].username, result[0].email, 1, result[0].type, res)
 
                 pool.getConnection().then(conn2 => {
                     var sql2 = "UPDATE login SET is_verified = 1 WHERE email = '" + email + "'"
@@ -244,16 +245,12 @@ function verifyEmail(req, res) {
 }
 
 function getTempPassword(req, res){
-    username = req.query.username
+    username = req.body.username
     otp = generateTempPassword()
     sql = "UPDATE login SET otp = '" + otp + "' WHERE username = '" + username + "';"
     pool.getConnection().then(conn =>{
         conn.query(sql).then(result => {
-            if(result.length){
-                res.status(201).send(otp)
-            }else{
-                res.status(403).send("Can't done your request.")
-            }
+            res.status(201).send(otp)
             conn.end()
         }).catch(err => {
             res.status(502).send("Can't done your request.")

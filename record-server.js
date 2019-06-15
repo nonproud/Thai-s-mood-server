@@ -15,7 +15,7 @@ app.post("/record/mood", jwt_module.verifyToken, (req, res) => {
     database.createMood(req, res)
 })
 
-app.get("/record/mood", jwt_module.verifyToken, (req, res) => {
+app.get("/record/mood", jwt_module.verifyTokenForGetMethod, (req, res) => {
     database.getMood(req, res)
 })
 
@@ -35,7 +35,7 @@ app.post("/record/sleep", jwt_module.verifyToken, (req, res) => {
     database.createSleep(req, res)
 })
 
-app.get("/record/sleep", jwt_module.verifyToken, (req, res) => {
+app.get("/record/sleep", jwt_module.verifyTokenForGetMethod, (req, res) => {
     database.getSleep(req, res)
 })
 
@@ -55,7 +55,7 @@ app.post("/record/diary", jwt_module.verifyToken, (req, res) => {
     database.createDiary(req, res)
 })
 
-app.get("/record/diary", jwt_module.verifyToken,  (req, res) => {
+app.get("/record/diary", jwt_module.verifyTokenForGetMethod,  (req, res) => {
     database.getDiary(req, res)
 })
 

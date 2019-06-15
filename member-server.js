@@ -25,7 +25,7 @@ app.put('/member', (req, res) =>{
 /**************************** end of /member *************************/
 
 /**************************** /member/profile ************************/
-app.get("/member/profile", jwt.verifyToken, (res, req) => {
+app.get("/member/profile", jwt.verifyTokenForGetMethod, (res, req) => {
     database.getAccountProfile(req, res)
 })
 
@@ -57,7 +57,7 @@ app.post("/member/login", (req, res) => {
     database.authLogin(req, res)
 })
 
-app.get("member/tempPassword", jwt.verifyToken, (req, res) =>{
+app.post("/member/tempPassword", jwt.verifyToken, (req, res) =>{
     database.getTempPassword(req, res)
 })
 
