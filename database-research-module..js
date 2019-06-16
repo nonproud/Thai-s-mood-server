@@ -24,9 +24,10 @@ function getUsername(token, callback){
         conn.query(getUsernameQueryString).then(result => {
             uname = result[0].username
             console.log("sql " + uname )
-            conn.close()
+            conn.end()
             return callback(null, uname)
         }).catch(err => {
+            conn.end()
             return callback(err, null)
         })
 
@@ -54,9 +55,10 @@ function getMood(req, res){
                     objs.push({username: username, emotion: result})
                     res.status(201).send(objs)
                     console.log("Complete tranfer emotion for: " + token + " username: " + username + " :P")
-                    close(conn)
+                    conn.end()
             }).catch(err => {
                 res.status(502).send("OPPS!")
+                conn.end()
             })
         })
         

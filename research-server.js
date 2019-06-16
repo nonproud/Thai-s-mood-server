@@ -8,11 +8,14 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get("/research/emotion", (req, res) => {
+app.get("/more/view-mood-chart", (req, res) => {
+    res.header('Access-Control-Allow-Origin', "*")
+    res.header('Access-Control-Allow-Methods', 'GET, POST')
+    res.header('Access-Control-Allow-Headers', "Content-Type")
     database.getMood(req, res)
 })
 
-app.get("/hospital", (req, res) => {
+app.get("/more/hospital", (req, res) => {
     res.header('Access-Control-Allow-Origin', "*")
     res.header('Access-Control-Allow-Methods', 'GET, POST')
     res.header('Access-Control-Allow-Headers', "Content-Type")
