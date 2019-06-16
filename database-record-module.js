@@ -33,8 +33,19 @@ module.exports = {
 
 /* Mood Function */
 
-function getMood(username, mood, level, date){
-    
+function getMood(req, res){
+    username = req.body.username
+    sql = "SELECT mood, level, date FROM mood WHERE username = '" + username + "';" 
+    pool.getConnection().then(conn => {
+        conn.query(sql).then(result => {
+            res.status(201).send(result)
+            conn.end()
+        }).catch(err => {
+            res.status(502).send("err")
+            console.log(err)
+            conn.end()
+        })
+    })
     
 }
 
@@ -86,7 +97,18 @@ function deleteMood(req, res){
 /* Sleep Function */
 
 function getSleep(req, res){
-    
+    username = req.body.username
+    sql = "SELECT total_time, start_time, end_time, date FROM sleep WHERE username = '" + username + "';" 
+    pool.getConnection().then(conn => {
+        conn.query(sql).then(result => {
+            res.status(201).send(result)
+            conn.end()
+        }).catch(err => {
+            res.status(502).send("err")
+            console.log(err)
+            conn.end()
+        })
+    })
 }
 
 function createSleep(req, res){
@@ -133,12 +155,24 @@ function deleteSleep(req, res){
     })
 }
 
+
 /* End of Sleep Function */
 
 /* Diary Function */
 
 function getDiary(req, res){
-    
+    username = req.body.username
+    sql = "SELECT title, story, date FROM sleep WHERE username = '" + username + "';" 
+    pool.getConnection().then(conn => {
+        conn.query(sql).then(result => {
+            res.status(201).send(result)
+            conn.end()
+        }).catch(err => {
+            res.status(502).send("err")
+            console.log(err)
+            conn.end()
+        })
+    })
 }
 
 function createDiary(req, res){

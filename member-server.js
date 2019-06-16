@@ -25,7 +25,7 @@ app.put('/member', (req, res) =>{
 /**************************** end of /member *************************/
 
 /**************************** /member/profile ************************/
-app.get("/member/profile", jwt.verifyTokenForGetMethod, (res, req) => {
+app.get("/member/profile", jwt.verifyTokenForGetMethod, (req, res) => {
     database.getAccountProfile(req, res)
 })
 
