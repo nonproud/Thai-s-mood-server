@@ -14,12 +14,12 @@ module.exports = {
 }
 
 function getEmailPassword(){
-    sql = "SELECT emailPassword from environment where 1";
+    sql = "SELECT * from environment where 1";
     console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
-            console.log("mailpass: " + result[0][0])
-            password =  result[0]
+            console.log("mailpass: " + result)
+            password =  result
             conn.end()
             console.log("mailpass: " + password)
             return password
