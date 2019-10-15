@@ -34,7 +34,9 @@ function getMood(req, res){
     console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
-            res.status(201).send(result)
+            res.status(201).json({
+                "result": result
+            })
             conn.end()
         }).catch(err => {
             res.status(502).send("err")
@@ -101,7 +103,9 @@ function getSleep(req, res){
     console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
-            res.status(201).send(result)
+            res.status(201).json({
+                "result": result
+            })
             conn.end()
         }).catch(err => {
             res.status(502).send("err")
@@ -169,7 +173,9 @@ function getDiary(req, res){
     console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
-            res.status(201).send(result)
+            res.status(201).json({
+                "result": result
+            })
             conn.end()
         }).catch(err => {
             res.status(502).send("err")

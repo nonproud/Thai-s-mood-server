@@ -93,7 +93,9 @@ function getEvaluation(req, res){
     console.log(sql)
     pool.getConnection().then(conn =>{
         conn.query(sql).then(result => {
-            res.status(201).send(result)
+            res.status(201).json({
+                "result": result
+            })
             conn.end()
         }).catch(err => {
             console.log(err)
