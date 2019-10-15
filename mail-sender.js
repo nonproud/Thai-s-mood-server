@@ -4,8 +4,8 @@ const database = require('./database-utilities-module')
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'thaismood.validate@gmail.com', // your email
-        pass: database.getEmailPassword() // your email password
+        user: 'thaismood.validate@gmail.com',
+        pass: '&z~)c?{1rN*|*q'
     }
     
 });
@@ -30,4 +30,8 @@ module.exports = {
                 console.log(info);
         });
     }
+}
+
+function returnValue(value){
+    return value
 }
