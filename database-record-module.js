@@ -173,6 +173,7 @@ function getDiary(req, res){
 function createDiary(req, res){
     values = "'" + req.body.username +"', '" + req.body.title + "', '" + req.body.story + "', '" + req.body.date + "'"
     sql_insert_diary_record = "INSERT INTO diary (username, title, story, date) VALUES (" + values +");"
+    console.log(sql_insert_diary_record)
     pool.getConnection().then(conn => {
         conn.query(sql_insert_diary_record).then(result => {
             res.status(201).send("1")
