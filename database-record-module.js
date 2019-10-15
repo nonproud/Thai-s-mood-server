@@ -8,9 +8,6 @@ const pool = mariadb.createPool({
     database: 'thaismood',
     connectionLimit: 20
 });
-const jwt = require("jwt-simple")
-
-const SECRET = "this is a real thai's mood server!"
 
 module.exports = {
 
@@ -18,12 +15,10 @@ module.exports = {
     createMood: createMood,
     editMood: editMood,
     deleteMood: deleteMood,
-
     getSleep: getSleep,
     createSleep: createSleep,
     editSleep: editSleep,
     deleteSleep: deleteSleep,
-
     getDiary: getDiary,
     createDiary: createDiary,
     editDiary: editDiary,
