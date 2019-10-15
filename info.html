@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<style>
+    .borderDiv {
+        border-radius: 25px;
+        border-style: dotted;
+        border-color: grey;
+        align-content: center;
+    }
+
+    .selectDiv {
+        display: inline;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 10%;
+        width: 300px;
+        align-content: center;
+    }
+
+    .banner {
+        background-color: darkcyan;
+        color: whitesmoke;
+        height: 60px;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+</style>
+
+<script>
+
+    function typeSelection() {
+
+        const typeIs = document.getElementById("typeSelection");
+        const val = typeIs.options[typeIs.selectedIndex].value;
+
+        const northernPV = ["เชียงใหม่", "เชียงราย", "น่าน", "พะเยา", "แพร่", "แม่ฮ่องสอน", "ลำปาง", "ลำพูน", "อุตรดิตถ์"];
+        const isanPV = ["กาฬสินธุ์", "ขอนแก่น", "ชัยภูมิ", "นครพนม", "นครราชสีมา", "บึงกาฬ", "บุรีรัมย์", "มหาสารคาม", "มุกดาหาร", "ยโสธร", "ร้อยเอ็ด", "เลย", "สกลนคร", "สุรินทร์", "ศรีสะเกษ", "หนองคาย", "หนองบัวลำภู", "อุดรธานี", "อุบลราชธานี", "อำนาจเจริญ"];
+        const easternPV = ["จันทบุรี", "ฉะเชิงเทรา", "ชลบุรี", "ตราด", "ปราจีนบุรี", "ระยอง", "สระแก้ว"];
+        const centralPV = ["กรุงเทพฯ", "กำแพงเพชร", "ชัยนาท", "นครนายก", "นครปฐม", "นครสวรรค์", "นนทบุรี", "ปทุมธานี", "พระนครศรีอยุธยา", "พิจิตร", "พิษณุโลก", "เพชรบูรณ์", "ลพบุรี", "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สระบุรี", "อ่างทอง", "อุทัยธานี"];
+        const westernPV = ["กาญจนบุรี", "ตาก", "ประจวบคีรีขันธ์", "เพชรบุรี", "ราชบุรี"];
+        const southernPV = ["กระบี่", "ชุมพร", "ตรัง", "นครศรีธรรมราช", "นราธิวาส", "ปัตตานี", "พังงา", "พัทลุง", "ภูเก็ต", "ระนอง", "สตูล", "สงขลา", "สุราษฎร์ธานี", "ยะลา"];
+
+        const secondDiv = document.getElementById("secondDiv");
+        const secondSelect = document.getElementById("secondSelect");
+
+        const dataDiv = document.getElementById("dataDiv");
+
+        //let newSelect = "<select id='secondSelect' class='custom-select selectDiv'></select>";
+
+        if (val === "northern") {
+
+            secondDiv.style.display = "block";
+            secondSelect.options.length = 0;
+            dataDiv.innerHTML = "";
+            let opt = document.createElement("option");
+            opt.text = 'เลือกจังหวัด';
+            secondSelect.add(opt);
+
+            for (i = 0; i < northernPV.length; i++) {
+                let a = document.createElement("option");
+                a.value = northernPV[i];
+                a.text = northernPV[i];
+                secondSelect.add(a);
+            }
+        } else if (val === "isan") {
+
+            secondDiv.style.display = "block";
+            secondSelect.options.length = 0;
+            dataDiv.innerHTML = "";
+            let opt = document.createElement("option");
+            opt.text = 'เลือกจังหวัด';
+            secondSelect.add(opt);
+
+            for (i = 0; i < isanPV.length; i++) {
+                let a = document.createElement("option");
+                a.value = isanPV[i];
+                a.text = isanPV[i];
+                secondSelect.add(a);
+            }
+        } else if (val === "central") {
+
+            secondDiv.style.display = "block";
+            secondSelect.options.length = 0;
+            dataDiv.innerHTML = "";
+            let opt = document.createElement("option");
+            opt.text = 'เลือกจังหวัด';
+            secondSelect.add(opt);
+
+            for (i = 0; i < centralPV.length; i++) {
+                let a = document.createElement("option");
+                a.value = centralPV[i];
+                a.text = centralPV[i];
+                secondSelect.add(a);
+            }
+
+        } else if (val === "eastern") {
+
+            secondDiv.style.display = "block";
+            secondSelect.options.length = 0;
+            dataDiv.innerHTML = "";
+            let opt = document.createElement("option");
+            opt.text = 'เลือกจังหวัด';
+            secondSelect.add(opt);
+
+            for (i = 0; i < easternPV.length; i++) {
+                let a = document.createElement("option");
+                a.value = easternPV[i];
+                a.text = easternPV[i];
+                secondSelect.add(a);
+            }
+
+        } else if (val === "western") {
+
+            secondDiv.style.display = "block";
+            secondSelect.options.length = 0;
+            dataDiv.innerHTML = "";
+            let opt = document.createElement("option");
+            opt.text = 'เลือกจังหวัด';
+            secondSelect.add(opt);
+
+            for (i = 0; i < westernPV.length; i++) {
+                let a = document.createElement("option");
+                a.value = westernPV[i];
+                a.text = westernPV[i];
+                secondSelect.add(a);
+            }
+
+        } else if (val === "southern") {
+
+            secondDiv.style.display = "block";
+            secondSelect.options.length = 0;
+            dataDiv.innerHTML = "";
+            let opt = document.createElement("option");
+            opt.text = 'เลือกจังหวัด';
+            secondSelect.add(opt);
+
+            for (i = 0; i < southernPV.length; i++) {
+                let a = document.createElement("option");
+                a.value = southernPV[i];
+                a.text = southernPV[i];
+                secondSelect.add(a);
+            }
+
+        } else {
+            secondDiv.style.display = "none";
+            dataDiv.innerHTML = "";
+        }
+
+
+    }
+
+    function getHospital() {
+
+        //http://192.168.2.35:7553/hospital?province={province}
+        const selectedItem = document.getElementById("secondSelect");
+        const pv = selectedItem.options[selectedItem.selectedIndex].value;
+        console.log(pv);
+
+        const dataDiv = document.getElementById("dataDiv");
+
+        var xmlhttp = new XMLHttpRequest();
+        var url = "http://http://18.189.3.142:3000/hospital?province=" + pv;
+
+        xmlhttp.onreadystatechange = function () {
+            // if (this.readyState == 4 && this.status == 200) {
+            var data = JSON.parse(this.responseText);
+            //console.log(data);
+
+            dataDiv.style.display = "block";
+            dataDiv.innerHTML = "";
+
+            for (i = 0; i < data.length; i++) {
+                let cardDiv = document.createElement('DIV');
+                let br1 = document.createElement("br");
+                let br2 = document.createElement("br");
+                let br3 = document.createElement("br");
+                switch (data[i].type) {
+                    case '1':
+                        cardDiv.className = 'card border-primary';
+                        break;
+
+                    case '2':
+                        cardDiv.className = 'card border-danger';
+                        break;
+
+                    case '3':
+                        cardDiv.className = 'card border-warning';
+                        break;
+
+                    case '4':
+                        cardDiv.className = 'card border-succes';
+                        break;
+
+                    case '5':
+                        cardDiv.className = 'card border-secondary';
+                        break;
+                }
+
+                //cardDiv.className = 'card border-primary';
+                cardDiv.style.margin = '20px';
+                cardDiv.style.width = '300px';
+                let subDiv = document.createElement('DIV');
+                subDiv.className = 'card-body selectDiv';
+                subDiv.style.margin = '15px';
+                let hospitalName = document.createTextNode(data[i].name);
+                let address = document.createTextNode(data[i].address);
+                let addresLabel = document.createTextNode('ที่อยู่ :');
+                let bold = document.createElement('strong');
+                bold.appendChild(hospitalName);
+                subDiv.appendChild(bold);
+                subDiv.appendChild(br1);
+                subDiv.appendChild(br2);
+                subDiv.appendChild(addresLabel);
+                subDiv.appendChild(br3);
+                subDiv.appendChild(address);
+                cardDiv.appendChild(subDiv);
+                dataDiv.appendChild(cardDiv);
+            }
+            // }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+
+
+
+
+    }
+
+</script>
+
+<body>
+
+    <div class="row">
+        <div class="col-xs-2" style="margin-top: 0px">
+
+            <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+                <img src="./img/hospital.png" width="50" height="50" class="d-inline-block align-top" style="margin-left:25px">
+                <h5 style="margin-left: 10px; margin-top: 10px"><b>ค้นหาสถานพยาบาลที่มีแผนกจิตเวช</b></h5>
+            </nav>
+
+            <div id="firstDiv" class="selectDiv">
+                <h6 style="margin-left: 45px"><b>กรุณาเลือกภูมิภาคและจังหวัด</b></h6>
+                    <select id="typeSelection" class="custom-select selectDiv" style="margin-top: 10px" onchange="typeSelection()">
+                        <option selected value="default">เลือกภูมิภาค</option>
+                        <option value="northern">ภาคเหนือ</option>
+                        <option value="isan">ภาคอีสาน</option>
+                        <option value="central">ภาคกลาง</option>
+                        <option value="eastern">ภาคตะวันออก</option>
+                        <option value="western">ภาคตะวันตก</option>
+                        <option value="southern">ภาคใต้</option>
+                    </select>
+            </div>
+
+            <div id="secondDiv" style="display: none">
+
+                <select id='secondSelect' class='custom-select selectDiv' onchange="getHospital()">
+
+                </select>
+            </div>
+
+            <div id="dataDiv" class="selectDiv" style="display: none">
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+</body>
+
+</html>
