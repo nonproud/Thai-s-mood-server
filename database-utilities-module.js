@@ -18,8 +18,10 @@ function getEmailPassword(){
     console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
+            password =  result[0]
             conn.end()
-            return result[0]
+            console.log(password)
+            return password
             
         }).catch(err => {
             res.status(502).send("err")
