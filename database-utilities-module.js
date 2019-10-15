@@ -10,7 +10,7 @@ const pool = mariadb.createPool({
 });
 
 module.exports = {
-    getEmailPassword: this.getEmailPassword
+    getEmailPassword: getEmailPassword
 }
 
 function getEmailPassword(){
