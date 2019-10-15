@@ -1,11 +1,11 @@
 const nodemailer = require('nodemailer')
-const database = require('./database-member-module')
+const database = require('./database-utilities-module')
 /* Gmail config */
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'thaismood.validate@gmail.com', // your email
-        pass: "!zS'#s,2,8tF7}xe" // your email password
+        pass: database.getEmailPassword // your email password
     }
 });
 

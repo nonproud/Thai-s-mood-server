@@ -26,7 +26,6 @@ function verifyToken(req, res, next) {
         }else{
           res.sendStatus(403);
         }
-        
       }
     });
   } else {
