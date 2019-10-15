@@ -18,7 +18,7 @@ function getEmailPassword(){
     console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
-            console.log("mailpass: " + JSON.stringify(result))
+            console.log("mailpass: " + JSON.stringify(result[0]))
             var obj = JSON.parse(result)
             var password = obj.emailPassword
             conn.end()
