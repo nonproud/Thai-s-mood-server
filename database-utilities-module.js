@@ -14,7 +14,7 @@ module.exports = {
 }
 
 function getEmailPassword(){
-    sql = "SELECT emailPassword from evironmet where 1";
+    sql = "SELECT emailPassword from environment where 1";
     console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
