@@ -7,9 +7,11 @@ const transporter = nodemailer.createTransport({
         user: 'thaismood.validate@gmail.com', // your email
         pass: database.getEmailPassword() // your email password
     }
+    
 });
 
 function getValidateMail(toEmail, confirm_code) {
+    console.log("MailSendert ::: " + database.getEmailPassword())
     let validate_mail = {
         from: 'thaismood.validate@gmail.com',
         to: toEmail,
