@@ -60,6 +60,7 @@ function createAccountProfile(req, res) {
     sql_update_usertpye_in_login_table = "UPDATE login SET type = '" + type +
      "' WHERE username = '" + username + "';"
 
+    console.log("SQL: " + sql_update_usertpye_in_login_table)
     pool.getConnection().then(conn => {
         conn.query(sql_update_usertpye_in_login_table)
         conn.end()
@@ -104,7 +105,7 @@ function createAccountProfile(req, res) {
         res.status(404).send("Error! your user's type is wrong.")
     }
 
-    console.log("SQL: " + sql)
+    console.log("SQL: " + sql_insert)
     pool.getConnection().then(conn =>{
         conn.query(sql_insert).then(result => {
             console.log(result)
