@@ -75,7 +75,7 @@ function createAccountProfile(req, res) {
         
         sql_insert = "INSERT INTO user_profile_general" +
         "(username, nickname, emergency_contact, dob, is_caffeine, is_drug_addict, created, last_modified) VALUES (" +
-        "'" + username + "', '" + nickname + "', '" + emergency_contact + "', '"+ dob + "', " + is_caffeine_addict + ", " + is_drug_addict + ", " +
+        "'" + username + "', '" + nickname + "', '" + emergency_contact + "', '"+ dob + "', '" + is_caffeine_addict + "', '" + is_drug_addict + "', " +
         "now(), now());"
 
     }else if(type === "p"){
@@ -98,9 +98,9 @@ function createAccountProfile(req, res) {
         sql_insert = "INSERT INTO user_profile_patient" +   
         "(username, nickname, emergency_contact, dob, sex, is_pregnant, weight, height, bmi, is_caffeine, is_drug_addict, d1, d2, d3, d4, d5, d6, created, last_modified)" +
         "VALUES (" +
-        "'" + username + "', '" + nickname + "', '" + emergency_contact + "', '" + dob + "', '" + sex + "', " + is_pregnant + ", " + weight + ", " +
-        height + ", " + bmi + ", " + is_caffeine_addict + ", " + is_drug_addict + ", " + d1 + ", " + 
-        d2 + ", " + d3 + ", " + d4 + ", " + d5 + ", '" + d6 + "', now(), now());"
+        "'" + username + "', '" + nickname + "', '" + emergency_contact + "', '" + dob + "', '" + sex + "', '" + is_pregnant + "', " + weight + ", " +
+        height + ", " + bmi + ", '" + is_caffeine_addict + "', '" + is_drug_addict + "', '" + d1 + "', " + 
+        d2 + "', '" + d3 + "', '" + d4 + "', '" + d5 + "', '" + d6 + "', now(), now());"
     }else{
         res.status(404).send("Error! your user's type is wrong.")
     }

@@ -90,6 +90,7 @@ function insertMdq(req, res){
 function getEvaluation(req, res){
     username = req.query.username
     sql = "SELECT * FROM evaluation WHERE username = '" + username + "';"
+    console.log(sql)
     pool.getConnection().then(conn =>{
         conn.query(sql).then(result => {
             res.status(201).send(result[0])

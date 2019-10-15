@@ -29,7 +29,7 @@ module.exports = {
 /* Mood Function */
 
 function getMood(req, res){
-    username = req.body.username
+    username = req.query.username
     sql = "SELECT mood, level, date FROM mood WHERE username = '" + username + "';" 
     console.log(sql)
     pool.getConnection().then(conn => {
@@ -96,7 +96,7 @@ function deleteMood(req, res){
 /* Sleep Function */
 
 function getSleep(req, res){
-    username = req.body.username
+    username = req.query.username
     sql = "SELECT total_time, start_time, end_time, date FROM sleep WHERE username = '" + username + "';" 
     console.log(sql)
     pool.getConnection().then(conn => {
@@ -164,7 +164,7 @@ function deleteSleep(req, res){
 /* Diary Function */
 
 function getDiary(req, res){
-    username = req.body.username
+    username = req.query.username
     sql = "SELECT title, story, date FROM sleep WHERE username = '" + username + "';" 
     console.log(sql)
     pool.getConnection().then(conn => {
