@@ -165,7 +165,7 @@ function deleteSleep(req, res){
 
 function getDiary(req, res){
     username = req.query.username
-    sql = "SELECT title, story, date FROM sleep WHERE username = '" + username + "';" 
+    sql = "SELECT title, story, date FROM diary WHERE username = '" + username + "';" 
     console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
