@@ -5,7 +5,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'thaismood.validate@gmail.com', // your email
-        pass: database.getEmailPassword // your email password
+        pass: database.getEmailPassword() // your email password
     }
 });
 
@@ -27,6 +27,5 @@ module.exports = {
             else
                 console.log(info);
         });
-        // console.log("Email: " + email + " | code: " + confirm_code)
     }
 }
