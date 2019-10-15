@@ -31,6 +31,7 @@ module.exports = {
 function getMood(req, res){
     username = req.body.username
     sql = "SELECT mood, level, date FROM mood WHERE username = '" + username + "';" 
+    console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
             res.status(201).send(result)
@@ -47,6 +48,7 @@ function getMood(req, res){
 function createMood(req, res){
     values = "'" + req.body.username +"', " + req.body.mood + ", " + req.body.level + ", '" + req.body.date + "'" 
     sql_insert_mood_record = "INSERT INTO mood (username, mood, level, date) VALUES (" + values +");"
+    console.log(sql_insert_mood_record)
     pool.getConnection().then(conn => {
         conn.query(sql_insert_mood_record).then(result => {
             res.status(201).send("1")
@@ -62,6 +64,7 @@ function createMood(req, res){
 function editMood(req, res){
     sql_update_mood_record = "UPDATE mood SET mood = " + req.body.mood + ", level = " + req.body.level + 
     " WHERE username = '" + req.body.username + "' AND date = '" + req.body.date + "';"
+    console.log(sql_update_mood_record)
     pool.getConnection().then(conn =>{
         conn.query(sql_update_mood_record).then(result => {
             res.status(201).send("1")
@@ -76,6 +79,7 @@ function editMood(req, res){
 
 function deleteMood(req, res){
     sql_delete_mood = "DELETE FROM mood WHERE username = '" + req.body.username + "' AND date = '" + req.body.date + "';"
+    console.log(sql_delete_mood)
     pool.getConnection().then(conn =>{
         conn.query(sql_delete_mood).then(result => {
             res.status(201).send("1")
@@ -94,6 +98,7 @@ function deleteMood(req, res){
 function getSleep(req, res){
     username = req.body.username
     sql = "SELECT total_time, start_time, end_time, date FROM sleep WHERE username = '" + username + "';" 
+    console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
             res.status(201).send(result)
@@ -110,6 +115,7 @@ function createSleep(req, res){
     values = "'" + req.body.username +"', " + req.body.total + ", '" + req.body.start + "', '" + req.body.end + "', '" +
     req.body.date + "'" 
     sql_insert_sleep_record = "INSERT INTO sleep (username, total_time, start_time, end_time, date) VALUES (" + values +");"
+    console.log(sql_insert_sleep_record)
     pool.getConnection().then(conn => {
         conn.query(sql_insert_sleep_record).then(result => {
             res.status(201).send("1")
@@ -126,6 +132,7 @@ function editSleep(req, res){
     sql_update_sleep_record = "UPDATE sleep SET total = " + req.body.total + "', start_time = '" + req.body.start + 
     "', " + req.values.start + "', end_time = '" + req.body.end + "' WHERE username = '" 
     + req.body.username + "' AND date = '" + req.body.date + "';"
+    console.log(sql_update_sleep_record)
     pool.getConnection().then(conn =>{
         conn.query(sql_update_sleep_record).then(result => {
             res.status(201).send("1")
@@ -139,6 +146,7 @@ function editSleep(req, res){
 
 function deleteSleep(req, res){
     sql_delete_sleep = "DELETE FROM sleep WHERE username = '" + req.body.username + "' AND date = '" + req.body.date + "';"
+    console.log(sql_delete_sleep)
     pool.getConnection().then(conn =>{
         conn.query(sql_delete_mood).then(result => {
             res.status(201).send("1")
@@ -158,6 +166,7 @@ function deleteSleep(req, res){
 function getDiary(req, res){
     username = req.body.username
     sql = "SELECT title, story, date FROM sleep WHERE username = '" + username + "';" 
+    console.log(sql)
     pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
             res.status(201).send(result)
@@ -188,6 +197,7 @@ function createDiary(req, res){
 function editDiary(req, res){
     sql_update_diary_record = "UPDATE diary SET title = '" + req.body.title + "', story = '" + req.body.story + 
     "'  WHERE username = '" + req.body.username + "' AND date = '" + req.body.date + "';"
+    console.log(sql_update_diary_record)
     pool.getConnection().then(conn =>{
         conn.query(sql_update_diary_record).then(result => {
             res.status(201).send("1")
@@ -203,6 +213,7 @@ function editDiary(req, res){
 
 function deleteDiary(req, res){
     sql_delete_diary = "DELETE FROM diary WHERE username = '" + req.body.username + "' AND date = '" + req.body.date + "';"
+    console.log(sql_delete_diary)
     pool.getConnection().then(conn =>{
         conn.query(sql_delete_mood).then(result => {
             res.status(201).send("1")
