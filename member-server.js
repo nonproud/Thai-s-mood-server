@@ -1,6 +1,9 @@
 const express = require('express')
 const bodyParser = require("body-parser")
-const database = require('./database-member-module')
+const memeberDBModule = require('./database-member-module')
+const recordDBModule = require('./database-record-module')
+const evaluationDBModule = require('./database-evaluation-module')
+const researcherDBModule = require('./database-research-module.')
 const jwt = require('./jwt-module')
 
 const app = express()
@@ -8,59 +11,151 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-/*********** Middle ware zone **********************************/
 
-/*********** End of Middle ware zone ***************************/
-
-
-/*********************************Finished **************************/
-/***************************** /member ********************************/
+// Create Account
 app.post("/member", (req, res) => {
-    database.createAccount(req, res)
+    memeberDBModule.createAccount(req, res)
 })
 
+// Update login Details
 app.put('/member', (req, res) =>{
-    database.updateLoginDetails(req, res)
+    memeberDBModule.updateLoginDetails(req, res)
 })
-/**************************** end of /member *************************/
 
-/**************************** /member/profile ************************/
+// Get account profile
 app.get("/member/profile", jwt.verifyTokenForGetMethod, (req, res) => {
-    database.getAccountProfile(req, res)
+    memeberDBModule.getAccountProfile(req, res)
 })
 
+// Create account profile
 app.post("/member/profile", (req, res) => {
-    database.createAccountProfile(req, res)
+    memeberDBModule.createAccountProfile(req, res)
 })
 /**************************** end of /member/profile *****************/
 
+// Verify Email by OTP
 app.post("/member/verifyEmail", (req, res) => {
-    database.verifyEmail(req, res)
+    memeberDBModule.verifyEmail(req, res)
 })
 
+// Check is email Dupplicate
 app.post("/member/email", (req, res) => {
-    database.checkIsEmailDuplicate(req, res)
+    memeberDBModule.checkIsEmailDuplicate(req, res)
 })
 
+// Check is Username dupplicate
 app.post("/member/username", (req, res) => {
-    database.checkIsUsernameDuplicate(req, res)
+    memeberDBModule.checkIsUsernameDuplicate(req, res)
 })
-/********************************** End of Finished ******************/
 
-
-
+// Update account profile
 app.put('/member/profile', jwt.verifyToken, (req, res) =>{
     res.send('meber/data')
 })
 
+// Login
 app.post("/member/login", (req, res) => {
-    database.authLogin(req, res)
+    memeberDBModule.authLogin(req, res)
 })
 
+// Get temp ID
 app.post("/member/tempPassword", jwt.verifyToken, (req, res) =>{
-    database.getTempPassword(req, res)
+    memeberDBModule.getTempPassword(req, res)
 })
 
+/* MOOD APIs */
+app.post("/record/mood", jwt_module.verifyToken, (req, res) => {
+    recordDBModule.createMood(req, res)
+})
+
+app.get("/record/mood", jwt_module.verifyTokenForGetMethod, (req, res) => {
+    recordDBModule.getMood(req, res)
+})
+
+app.put("/record/mood", jwt_module.verifyToken, (req, res) => {
+    recordDBModule.editMood(req, res)
+})
+
+app.delete("/record/mood", jwt_module.verifyToken, (req, res) => {
+    recordDBModule.deleteMood(req, res)
+})
+
+/* END OF MOOD APIs */
+
+/* SLEEP APIs */
+
+app.post("/record/sleep", jwt_module.verifyToken, (req, res) => {
+    recordDBModule.createSleep(req, res)
+})
+
+app.get("/record/sleep", jwt_module.verifyTokenForGetMethod, (req, res) => {
+    recordDBModule.getSleep(req, res)
+})
+
+app.put("/record/sleep", jwt_module.verifyToken,(req, res) => {
+    recordDBModule.editSleep(req, res)
+})
+
+app.delete("/record/sleep", jwt_module.verifyToken, (req, res) => {
+    recordDBModule.deleteSleep(req, res)
+})
+
+/* END OF SLEEP APIs */
+
+/* DIARY APIs */
+
+app.post("/record/diary", jwt_module.verifyToken, (req, res) => {
+    recordDBModule.createDiary(req, res)
+})
+
+app.get("/record/diary", jwt_module.verifyTokenForGetMethod,  (req, res) => {
+    recordDBModule.getDiary(req, res)
+})
+
+app.put("/record/diary", jwt_module.verifyToken, (req, res) => {
+    recordDBModule.editDiary(req, res)
+})
+
+app.delete("/record/diary", jwt_module.verifyToken, (req, res) => {
+    recordDBModule.deleteDiary(req, res)
+})
+
+/* END OF DIARY APIs */
+
+/* Evaluation APIs */
+app.post("/evaluation", jwtModule.verifyToken, (req, res) => {
+    type = req.body.type
+    if(type === "2q"){
+        evaluationDBModule.insert2q(req, res)
+    }else if(type === "9q"){
+        evaluationDBModule.insert9q(req, res)
+    }else if(type === "8q"){
+        evaluationDBModule.insert8q(req, res)
+    }else if(type === "mdq"){
+        evaluationDBModule.insertMdq(req, res)
+    }
+})
+
+app.get("evaluation", jwtModule.verifyTokenForGetMethod, (req, res) =>{
+    evaluationDBModule(req, res)
+})
+/* End of Evaluation APIs */
+
+/* Researcher APIs */
+app.get("/more/view-mood-chart", (req, res) => {
+    res.header('Access-Control-Allow-Origin', "*")
+    res.header('Access-Control-Allow-Methods', 'GET, POST')
+    res.header('Access-Control-Allow-Headers', "Content-Type")
+    researcherDBModule.getMood(req, res)
+})
+
+app.get("/more/hospital", (req, res) => {
+    res.header('Access-Control-Allow-Origin', "*")
+    res.header('Access-Control-Allow-Methods', 'GET, POST')
+    res.header('Access-Control-Allow-Headers', "Content-Type")
+    researcherDBModule.getHospital(req, res)
+})
+/* Researcher APIs */
  
 app.listen(4553, () =>{
     console.log("Thais Mood 'Member' API was ran on PORT 4553;")
