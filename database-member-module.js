@@ -37,7 +37,7 @@ function createAccount(req, res) {
         email = req.body.email
         username = req.body.username
         password = req.body.password
-        values = "'" + username + "', '" + email + "', SHA2('" + password + "', 256), '" + verifyPassword + "', " + 0;
+        values = "'" + username + "', '" + email + "', SHA2('" + password + "', 256), '" + verifyPassword + "', " + "0";
         sql = "INSERT INTO login (username, email, password, otp, is_verified) VALUES (" + values + ");"
         conn.query(sql).then((result) => {
             mail_sender.sendValidateMail(email, verifyPassword)
@@ -198,7 +198,7 @@ function authLogin(req, res) {
                 if(result[0] === undefined){
                     res.status(201).send("0")
                 }else{
-                    console.log(username + ":" + email + "login successfully at " + new Date())
+                    console.log(username + ":" + email + " login successfully at " + new Date())
                     jwt_module.getAndSentToken(result[0].username, result[0].email, result[0].is_verified, result[0].type, res)
                 }
                 conn.end()
