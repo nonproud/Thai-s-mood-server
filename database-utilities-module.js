@@ -20,11 +20,10 @@ function getEmailPassword(){
         conn.query(sql).then(result => {
             password =  result[0]
             conn.end()
-            console.log(password)
+            console.log("mailpass: " + password)
             return password
             
         }).catch(err => {
-            res.status(502).send("err")
             console.log(err)
             conn.end()
         })
