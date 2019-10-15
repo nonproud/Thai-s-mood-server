@@ -137,7 +137,7 @@ app.post("/evaluation", jwtModule.verifyToken, (req, res) => {
     }
 })
 
-app.get("evaluation", jwtModule.verifyTokenForGetMethod, (req, res) =>{
+app.get("/evaluation", jwtModule.verifyTokenForGetMethod, (req, res) =>{
     evaluationDBModule.getEvaluation(req, res)
 })
 /* End of Evaluation APIs */
