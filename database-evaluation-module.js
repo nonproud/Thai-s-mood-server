@@ -89,7 +89,7 @@ function insertMdq(req, res){
 
 function getEvaluation(req, res){
     username = req.query.username
-    sql = "SELECT * FROM evaluation WHERE username = '" + username + "';"
+    sql = "SELECT 2q, 9q, 8q, mdq, date FROM evaluation WHERE username = '" + username + "';"
     console.log(sql)
     pool.getConnection().then(conn =>{
         conn.query(sql).then(result => {
