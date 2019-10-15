@@ -38,7 +38,7 @@ function createAccount(req, res) {
         username = req.body.username
         password = req.body.password
         values = "'" + username + "', '" + email + "', SHA2('" + password + "', 256), '" + verifyPassword + "', " + 0;
-        sql = "INSERT INTO login (username, email, password, verify_password, is_verified) VALUES (" + values + ");"
+        sql = "INSERT INTO login (username, email, password, otp, is_verified) VALUES (" + values + ");"
         conn.query(sql).then((result) => {
             mail_sender.sendValidateMail(email, verifyPassword)
             res.status(201).send(username)
@@ -153,7 +153,7 @@ function updateLoginDetails(req, res) {
     if (email != "NULL") {
         newVerifypassword = generateVerifypassword()
         pool.getConnection().then(conn => {
-            sql = "UPDATE login SET email = '" + email + "', verify_password = '" + newVerifypassword + "' WHERE username = '" + username + "'"
+            sql = "UPDATE login SET email = '" + email + "', otp = '" + newVerifypassword + "' WHERE username = '" + username + "'"
             conn.query(sql).then((result) => {
                 mail_sender.sendValidateMail(email, newVerifypassword)
                 stauts = true
@@ -212,7 +212,7 @@ function verifyEmail(req, res) {
     var email = req.body.email
     var verifyPassword = req.body.verifyPassword
     pool.getConnection().then(conn => {
-        var sql = "SELECT * FROM login WHERE email = '" + email + "' AND verify_password = '" + verifyPassword + "'"
+        var sql = "SELECT * FROM login WHERE email = '" + email + "' AND otp = '" + verifyPassword + "'"
         conn.query(sql).then((result) => {
             if (!result.length) {
                 console.log("Email: " + email + " verify status: failed")
