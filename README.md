@@ -15,29 +15,12 @@ Thais Mood server พัฒนาบน NodeJS + ExpressJS
 2. ติดตั้ง [ExpressJS](https://expressjs.com/en/starter/installing.html)
 
 ## การรัน deploy server
-1. ถ้าหากมีโฟลเดอร์ node_modules อยู่ให้ทำการลบออกก่อน
-2. ให้ออกคำสั่ง npm install ภายตั้ง Directory Thais Mood server
+1. ให้ออกคำสั่ง npm install ภายใต้ Directory Thais Mood server
 ```bash
 npm install
 ```
-3. ในการรันแต่ละ service ให้ manual run แต่ละไฟล์ดังนี้
+2. รัน service ขึ้นมา
+```bash
+    node main-server.js
+```
 
-3.1 /member
-```bash
-    node member-server.js
-```
-3.2 /record
-```bash
-    node record-server.js
-```
-3.3 /evaluation
-```bash
-    node evaluation-server.js
-```
-3.4 /researcher
-```bash
-    node researcher-server.js
-```
-    
-##เพิ่มเติม
-เนื่องจากตอนพัฒนาผู้พัฒนาใช้ nginx เป็นตัวรับ Request แล้วกระจายไปยัง services ต่างๆ ทั้งนี้ตัว service สามารถใช้งานได้เลยหากเรียกผ่าน port 
