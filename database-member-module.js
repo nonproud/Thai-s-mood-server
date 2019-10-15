@@ -130,7 +130,7 @@ function getAccountProfile(req, res) {
     }else if(type == "p"){
         sql_select = "SELECT * FROM user_profile_patient WHERE username = '" + username + "';"
     }else{
-        res.status(404).send("0")
+        res.status(201).send("0")
     }
 
     pool.getConnection().then(conn => {
