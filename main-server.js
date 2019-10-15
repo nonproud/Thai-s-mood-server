@@ -105,6 +105,7 @@ app.delete("/record/sleep", jwtModule.verifyToken, (req, res) => {
 /* DIARY APIs */
 
 app.post("/record/diary", jwtModule.verifyToken, (req, res) => {
+    console.log("create diary request for: " + req.header.arguments)
     recordDBModule.createDiary(req, res)
 })
 
