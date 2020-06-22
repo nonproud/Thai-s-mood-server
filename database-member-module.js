@@ -36,13 +36,13 @@ function createAccount(req, res) {
             mail_sender.sendValidateMail(email, verifyPassword)
             res.status(201).send(username)
             conn.end()
-            
+
         }).catch(err => {
             console.log(err)
             res.status(502).send("Cant create user profile now, Try again later.")
             conn.end()
         })
-        
+
     })
 }
 
@@ -51,7 +51,7 @@ function createAccountProfile(req, res) {
     sql_insert = ""
     username = req.body.username
     sql_update_usertpye_in_login_table = "UPDATE login SET type = '" + type +
-     "' WHERE username = '" + username + "';"
+        "' WHERE username = '" + username + "';"
 
     console.log("SQL: " + sql_update_usertpye_in_login_table)
     pool.getConnection().then(conn => {
@@ -59,19 +59,19 @@ function createAccountProfile(req, res) {
         conn.end()
     })
 
-    if(type === "g"){
+    if (type === "g") {
         nickname = req.body.nickname
         emergency_contact = req.body.emergency_contact
         dob = req.body.dob
         is_caffeine_addict = req.body.is_caffeine_addict
         is_drug_addict = req.body.is_drug_addict
-        
-        sql_insert = "INSERT INTO user_profile_general" +
-        "(username, nickname, emergency_contact, dob, is_caffeine, is_drug_addict, created, last_modified) VALUES (" +
-        "'" + username + "', '" + nickname + "', '" + emergency_contact + "', '"+ dob + "', '" + is_caffeine_addict + "', '" + is_drug_addict + "', " +
-        "now(), now());"
 
-    }else if(type === "p"){
+        sql_insert = "INSERT INTO user_profile_general" +
+            "(username, nickname, emergency_contact, dob, is_caffeine, is_drug_addict, created, last_modified) VALUES (" +
+            "'" + username + "', '" + nickname + "', '" + emergency_contact + "', '" + dob + "', '" + is_caffeine_addict + "', '" + is_drug_addict + "', " +
+            "now(), now());"
+
+    } else if (type === "p") {
         nickname = req.body.nickname
         emergency_contact = req.body.emergency_contact
         sex = req.body.sex
@@ -88,23 +88,23 @@ function createAccountProfile(req, res) {
         d4 = req.body.d4
         d5 = req.body.d5
         d6 = req.body.d6
-        sql_insert = "INSERT INTO user_profile_patient" +   
-        "(username, nickname, emergency_contact, dob, sex, is_pregnant, weight, height, bmi, is_caffeine, is_drug_addict, d1, d2, d3, d4, d5, d6, created, last_modified)" +
-        "VALUES (" +
-        "'" + username + "', '" + nickname + "', '" + emergency_contact + "', '" + dob + "', '" + sex + "', '" + is_pregnant + "', " + weight + ", " +
-        height + ", " + bmi + ", '" + is_caffeine_addict + "', '" + is_drug_addict + "', '" + d1 + "', " + 
-        d2 + "', '" + d3 + "', '" + d4 + "', '" + d5 + "', '" + d6 + "', now(), now());"
-    }else{
+        sql_insert = "INSERT INTO user_profile_patient" +
+            "(username, nickname, emergency_contact, dob, sex, is_pregnant, weight, height, bmi, is_caffeine, is_drug_addict, d1, d2, d3, d4, d5, d6, created, last_modified)" +
+            "VALUES (" +
+            "'" + username + "', '" + nickname + "', '" + emergency_contact + "', '" + dob + "', '" + sex + "', '" + is_pregnant + "', " + weight + ", " +
+            height + ", " + bmi + ", '" + is_caffeine_addict + "', '" + is_drug_addict + "', '" + d1 + "', " +
+            d2 + "', '" + d3 + "', '" + d4 + "', '" + d5 + "', '" + d6 + "', now(), now());"
+    } else {
         res.status(404).send("Error! your user's type is wrong.")
     }
 
     console.log("SQL: " + sql_insert)
-    pool.getConnection().then(conn =>{
+    pool.getConnection().then(conn => {
         conn.query(sql_insert).then(result => {
             console.log(result)
             res.status(201).send("1")
             conn.end()
-        }).catch(err =>{
+        }).catch(err => {
             console.log(err)
             res.status(502).send("0")
             conn.end()
@@ -118,11 +118,11 @@ function getAccountProfile(req, res) {
     console.log("type: " + type + " username: " + username)
     sql_select = ""
 
-    if(type == "g"){
+    if (type == "g") {
         sql_select = "SELECT * FROM user_profile_general WHERE username = '" + username + "';"
-    }else if(type == "p"){
+    } else if (type == "p") {
         sql_select = "SELECT * FROM user_profile_patient WHERE username = '" + username + "';"
-    }else{
+    } else {
         res.status(201).send("0")
     }
 
@@ -134,7 +134,7 @@ function getAccountProfile(req, res) {
             res.status(502).send("Cant get user profile now, Try again later.")
             conn.end()
         })
-        
+
     })
 }
 
@@ -179,26 +179,26 @@ function updateLoginDetails(req, res) {
     }
 }
 
-function authLogin(req, res) { 
+function authLogin(req, res) {
     username = req.body.username
     email = req.body.email
     password = req.body.password
-    sql = "SELECT * FROM login WHERE (email = '" + email + "' OR username ='" + username + 
+    sql = "SELECT * FROM login WHERE (email = '" + email + "' OR username ='" + username +
         "') AND password = SHA2('" + password + "', 256);"
     pool.getConnection().then(conn => {
         conn.query(sql).then((result) => {
-    
-                if(result[0] === undefined){
-                    res.status(201).send("0")
-                }else{
-                    console.log(username + ":" + email + " login successfully at " + new Date())
-                    jwt_module.getAndSentToken(result[0].username, result[0].email, result[0].is_verified, result[0].type, res)
-                }
-                conn.end()
-            }).catch(err => {
-                console.log(err)
-                res.status(502).send("Cant login now, Try again later.")
-            })
+
+            if (result[0] === undefined) {
+                res.status(201).send("0")
+            } else {
+                console.log(username + ":" + email + " login successfully at " + new Date())
+                jwt_module.getAndSentToken(result[0].username, result[0].email, result[0].is_verified, result[0].type, res)
+            }
+            conn.end()
+        }).catch(err => {
+            console.log(err)
+            res.status(502).send("Cant login now, Try again later.")
+        })
     })
 }
 
@@ -238,11 +238,11 @@ function verifyEmail(req, res) {
 
 }
 
-function getTempPassword(req, res){
+function getTempPassword(req, res) {
     username = req.body.username
     otp = generateTempPassword()
     sql = "UPDATE login SET otp = '" + otp + "' WHERE username = '" + username + "';"
-    pool.getConnection().then(conn =>{
+    pool.getConnection().then(conn => {
         conn.query(sql).then(result => {
             res.status(201).send(otp)
             conn.end()
@@ -291,22 +291,21 @@ function getNewVerifyPassword(req, res) {
 
 function checkIsEmailDuplicate(req, res) {
     var email = req.body.email
-    pool.getConnection().then(conn => {
-        var sql = "SELECT * FROM login WHERE email = '" + email + "'"
-        conn.query(sql).then(result => {
-            if (!result.length) {
-                res.status(201).send("0")
-                console.log("Email: " + email + " is not duplicate.")
-            } else {
-                res.status(201).send("1")
-                console.log("Email: " + email + " is duplicate.")
-            }
-            conn.end();
-        }).catch(err => {
-            res.status(502).send("Can't complete your request righnow, try again later.")
-        })
-        conn.end()
+    var sql = "SELECT * FROM login WHERE email = '" + email + "'"
+    pool.query(sql).then(result => {
+        if (!result.length) {
+            res.status(201).send("0")
+            console.log("Email: " + email + " is not duplicate.")
+        } else {
+            res.status(201).send("1")
+            console.log("Email: " + email + " is duplicate.")
+        }
+        pool.end()
+    }).catch(err => {
+        res.status(502).send("Can't complete your request righnow, try again later.")
     })
+    pool.end()
+
 }
 
 function checkIsUsernameDuplicate(req, res) {
@@ -321,7 +320,7 @@ function checkIsUsernameDuplicate(req, res) {
                 res.status(201).send("1")
                 console.log("Username: " + username + " is duplicate.")
             }
-            
+
         }).catch(err => {
             res.status(502).send("Can't complete your request righnow, try again later.")
         })
