@@ -158,6 +158,10 @@ app.get("/more/hospital", (req, res) => {
 })
 /* Researcher APIs */
  
-app.listen(4553, () =>{
+app.listen(getPort, () =>{
     console.log('Thais Mood "Main server" APIs was ran on PORT 3000')
 })
+
+var getPort = () => {
+    return process.env.PORT
+}
