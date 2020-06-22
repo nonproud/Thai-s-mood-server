@@ -1,5 +1,5 @@
 const connectionString = process.env.DATABASE_URL
-const { Pool, Client } = require('pg')
+const { Pool } = require('pg')
 const pool = new Pool({
     connectionString: connectionString
 })
@@ -14,88 +14,81 @@ module.exports = {
     getEvaluation: getEvaluation
 }
 
-function insert2q(req, res){
+function insert2q(req, res) {
     score = req.body.score
     date = req.body.date
     username = req.body.username
     sql = "INSERT INTO evaluation(username, 2q, date) values('" + username + "', " + score + ", '" + date + "');"
-    pool.getConnection().then(conn =>{
-        conn.query(sql).then(result => {
-            res.status(201).send("1")
-            conn.end()
-        }).catch(err => {
-            console.log(err)
-            res.status(502).send("Can't done your request")
-            conn.end()
-        })
+    pool.query(sql).then(result => {
+        res.status(201).send("1")
+        pool.end()
+    }).catch(err => {
+        console.log(err)
+        res.status(502).send("Can't done your request")
+        pool.end()
     })
+
 }
 
-function insert9q(req, res){
+function insert9q(req, res) {
     score = req.body.score
     date = req.body.date
     username = req.body.username
     sql = "UPDATE evaluation SET 9q = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
-    pool.getConnection().then(conn =>{
-        conn.query(sql).then(result => {
-            res.status(201).send("1")
-            conn.end()
-        }).catch(err => {
-            console.log(err)
-            res.status(502).send("Can't done your request")
-            conn.end()
-        })
+
+    pool.query(sql).then(result => {
+        res.status(201).send("1")
+        pool.end()
+    }).catch(err => {
+        console.log(err)
+        res.status(502).send("Can't done your request")
+        pool.end()
     })
 }
 
-function insert8q(req, res){
+function insert8q(req, res) {
     score = req.body.score
     date = req.body.date
     username = req.body.username
     sql = "UPDATE evaluation SET 8q = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
-    pool.getConnection().then(conn =>{
-        conn.query(sql).then(result => {
-            res.status(201).send("1")
-            conn.end()
-        }).catch(err => {
-            console.log(err)
-            res.status(502).send("Can't done your request")
-            conn.end()
-        })
+    pool.query(sql).then(result => {
+        res.status(201).send("1")
+        pool.end()
+    }).catch(err => {
+        console.log(err)
+        res.status(502).send("Can't done your request")
+        pool.end()
     })
 }
 
-function insertMdq(req, res){
+function insertMdq(req, res) {
     score = req.body.score
     date = req.body.date
     username = req.body.username
     sql = "UPDATE evaluation SET mdq = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
-    pool.getConnection().then(conn =>{
-        conn.query(sql).then(result => {
-            res.status(201).send("1")
-            conn.end()
-        }).catch(err => {
-            console.log(err)
-            res.status(502).send("Can't done your request")
-            conn.end()
-        })
+    pool.query(sql).then(result => {
+        res.status(201).send("1")
+        pool.end()
+    }).catch(err => {
+        console.log(err)
+        res.status(502).send("Can't done your request")
+        pool.end()
     })
 }
 
-function getEvaluation(req, res){
+function getEvaluation(req, res) {
     username = req.query.username
     sql = "SELECT 2q, 9q, 8q, mdq, date FROM evaluation WHERE username = '" + username + "';"
     console.log(sql)
-    pool.getConnection().then(conn =>{
-        conn.query(sql).then(result => {
-            res.status(201).json({
-                "result": result
-            })
-            conn.end()
-        }).catch(err => {
-            console.log(err)
-            res.status(502).send("Can't done your request")
-            conn.end()
+    pool.query(sql).then(result => {
+        res.status(201).json({
+            "result": result
         })
+        pool.end()
+    }).catch(err => {
+        console.log(err)
+        res.status(502).send("Can't done your request")
+        pool.end()
     })
+
 }
