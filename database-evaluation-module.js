@@ -1,15 +1,10 @@
-/*MariaDB version */
-const mariadb = require('mariadb');
-const pool = mariadb.createPool({
-    host: 'localhost',
-    port: 3306,
-    user: 'api',
-    password: 'password',
-    database: 'thaismood',
-    connectionLimit: 20
-});
-const jwt_module = require("./jwt-module")
+const connectionString = process.env.DATABASE_URL
+const { Pool, Client } = require('pg')
+const pool = new Pool({
+    connectionString: connectionString
+})
 
+const jwt_module = require("./jwt-module")
 
 module.exports = {
     insert2q: insert2q,

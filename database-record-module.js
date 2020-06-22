@@ -1,14 +1,8 @@
-/*MariaDB version */
-const mariadb = require('mariadb');
-const pool = mariadb.createPool({
-    host: 'localhost',
-    port: 3306,
-    user: 'api',
-    password: 'password',
-    database: 'thaismood',
-    connectionLimit: 20
-});
-
+const connectionString = process.env.DATABASE_URL
+const { Pool, Client } = require('pg')
+const pool = new Pool({
+    connectionString: connectionString
+})
 module.exports = {
 
     getMood: getMood,
