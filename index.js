@@ -7,6 +7,7 @@ const researcherDBModule = require('./database-research-module.')
 const jwtModule = require('./jwt-module')
 
 const app = express()
+const PORT = process.env.PORT || 4553
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -158,10 +159,6 @@ app.get("/more/hospital", (req, res) => {
 })
 /* Researcher APIs */
  
-app.listen(getPort, () =>{
+app.listen(PORT, () =>{
     console.log('Thais Mood "Main server" APIs was ran on PORT 3000')
 })
-
-var getPort = () => {
-    return process.env.PORT
-}
