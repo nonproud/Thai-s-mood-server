@@ -160,5 +160,5 @@ app.get("/more/hospital", (req, res) => {
 /* Researcher APIs */
  
 app.listen(PORT, () =>{
-    console.log('Thais Mood "Main server" APIs was ran on PORT 3000')
+    console.log('Thais Mood "Main server" APIs was ran on PORT ' + PORT)
 })
