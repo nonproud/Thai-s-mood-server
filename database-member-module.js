@@ -193,7 +193,7 @@ function verifyEmail(req, res) {
     var sql = "SELECT * FROM login WHERE email = '" + email + "' AND otp = '" + verifyPassword + "'"
     console.log(sql)
     pool.query(sql).then((result) => {
-        console.log(sql)
+        console.log(result)
         if (!result.length) {
             console.log("Email: " + email + " verify status: failed")
             res.status(201).send("0")
