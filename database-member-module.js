@@ -31,6 +31,7 @@ function createAccount(req, res) {
         password = req.body.password
         values = "'" + username + "', '" + email + "', '" + password + "', '" + verifyPassword + "', " + "0";
         sql = "INSERT INTO login (username, email, password, otp, is_verified) VALUES (" + values + ");"
+        console.log(sql);
         pool.query(sql).then((result) => {
             mail_sender.sendValidateMail(email, verifyPassword)
             res.status(201).send(username)
