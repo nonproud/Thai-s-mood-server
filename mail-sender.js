@@ -1,13 +1,14 @@
 const nodemailer = require('nodemailer')
 const database = require('./database-utilities-module')
 /* Gmail config */
+const emailPassword = process.env.EMAIL_PASSWORD;
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'thaismood.validate@gmail.com',
-        pass: '&z~)c?{1rN*|*q'
+        pass: emailPassword
     }
-    
+
 });
 
 function getValidateMail(toEmail, confirm_code) {
