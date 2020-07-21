@@ -35,12 +35,12 @@ function createAccount(req, res) {
         pool.query(sql).then((result) => {
             mail_sender.sendValidateMail(email, verifyPassword)
             res.status(201).send(username)
-            pool.end()
+            // pool.end()
 
         }).catch(err => {
             console.log(err)
             res.status(502).send("Cant create user profile now, Try again later.")
-            pool.end()
+            // pool.end()
         })
 }
 
@@ -54,7 +54,7 @@ function createAccountProfile(req, res) {
     console.log("SQL: " + sql_update_usertpye_in_login_table)
 
     pool.query(sql_update_usertpye_in_login_table)
-    pool.end()
+    // pool.end()
 
     if (type === "g") {
         nickname = req.body.nickname
@@ -99,11 +99,11 @@ function createAccountProfile(req, res) {
     pool.query(sql_insert).then(result => {
         console.log(result)
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         console.log(err)
         res.status(502).send("0")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -122,10 +122,10 @@ function getAccountProfile(req, res) {
     }
     pool.query(sql_select).then((result) => {
         res.status(201).send(result[0])
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("Cant get user profile now, Try again later.")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -141,20 +141,20 @@ function updateLoginDetails(req, res) {
         pool.query(sql).then((result) => {
             mail_sender.sendValidateMail(email, newVerifypassword)
             stauts = true
-            pool.end()
+            // pool.end()
         }).catch(err => {
             stauts = false
 
-            pool.end()
+            // pool.end()
         })
     } else if (passwd != "NULL") {
         sql = "UPDATE login set password = '" + password + "' WHERE username = '" + username + "';"
         pool.query(sql).then(result => {
             stauts = true
-            pool.end()
+            // pool.end()
         }).catch(err => {
             stauts = false
-            pool.end()
+            // pool.end()
         })
     }
 
@@ -179,7 +179,7 @@ function authLogin(req, res) {
             console.log(username + ":" + email + " login successfully at " + new Date())
             jwt_module.getAndSentToken(result[0].username, result[0].email, result[0].is_verified, result[0].type, res)
         }
-        pool.end()
+        // pool.end()
     }).catch(err => {
         console.log(err)
         res.status(502).send("Cant login now, Try again later.")
@@ -195,7 +195,7 @@ function verifyEmail(req, res) {
         if (!result.length) {
             console.log("Email: " + email + " verify status: failed")
             res.status(201).send("0")
-            pool.end()
+            // pool.end()
         } else {
             console.log("Email " + email + " verify status: success")
             jwt_module.getAndSentToken(result[0].username, result[0].email, 1, result[0].type, res)
@@ -204,19 +204,19 @@ function verifyEmail(req, res) {
             var sql2 = "UPDATE login SET is_verified = 1 WHERE email = '" + email + "'"
             pool.query(sql2).then(result => {
                 console.log("Email: " + email + " change verify status: success")
-                pool.end()
+                // pool.end()
             }).catch(err => {
                 console.log("Email: " + email + " change verify status: failed")
-                pool.end()
+                // pool.end()
             })
 
-            pool.end()
+            // pool.end()
         }
 
     }).catch(err => {
         res.status(502).send("Can't verify Email NOW!")
     })
-    pool.end()
+    // pool.end()
 
 
 }
@@ -227,10 +227,10 @@ function getTempPassword(req, res) {
     sql = "UPDATE login SET otp = '" + otp + "' WHERE username = '" + username + "';"
     pool.query(sql).then(result => {
         res.status(201).send(otp)
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("Can't done your request.")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -266,7 +266,7 @@ function getNewVerifyPassword(req, res) {
     }).catch(err => {
         res.status(502).send("Failed")
     })
-    pool.end()
+    // pool.end()
 
 }
 
@@ -281,11 +281,11 @@ function checkIsEmailDuplicate(req, res) {
             res.status(201).send("1")
             console.log("Email: " + email + " is duplicate.")
         }
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("Can't complete your request righnow, try again later.")
     })
-    pool.end()
+    // pool.end()
 
 }
 
@@ -304,5 +304,5 @@ function checkIsUsernameDuplicate(req, res) {
     }).catch(err => {
         res.status(502).send("Can't complete your request righnow, try again later.")
     })
-    pool.end()
+    // pool.end()
 }
