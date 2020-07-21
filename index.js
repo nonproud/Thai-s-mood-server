@@ -24,7 +24,7 @@ app.put('/member', (req, res) =>{
 })
 
 // Get account profile
-app.get("/member/profile", jwtModule.verifyTokenForGetMethod, (req, res) => {
+app.get("/member/profile", (req, res) => {
     memeberDBModule.getAccountProfile(req, res)
 })
 
@@ -50,7 +50,7 @@ app.post("/member/username", (req, res) => {
 })
 
 // Update account profile
-app.put('/member/profile', jwtModule.verifyToken, (req, res) =>{
+app.put('/member/profile', (req, res) =>{
     res.send('meber/data')
 })
 
@@ -60,24 +60,24 @@ app.post("/member/login", (req, res) => {
 })
 
 // Get temp ID
-app.post("/member/tempPassword", jwtModule.verifyToken, (req, res) =>{
+app.post("/member/tempPassword", (req, res) =>{
     memeberDBModule.getTempPassword(req, res)
 })
 
 /* MOOD APIs */
-app.post("/record/mood", jwtModule.verifyToken, (req, res) => {
+app.post("/record/mood", (req, res) => {
     recordDBModule.createMood(req, res)
 })
 
-app.get("/record/mood", jwtModule.verifyTokenForGetMethod, (req, res) => {
+app.get("/record/mood", (req, res) => {
     recordDBModule.getMood(req, res)
 })
 
-app.put("/record/mood", jwtModule.verifyToken, (req, res) => {
+app.put("/record/mood", (req, res) => {
     recordDBModule.editMood(req, res)
 })
 
-app.delete("/record/mood", jwtModule.verifyToken, (req, res) => {
+app.delete("/record/mood", (req, res) => {
     recordDBModule.deleteMood(req, res)
 })
 
@@ -85,19 +85,19 @@ app.delete("/record/mood", jwtModule.verifyToken, (req, res) => {
 
 /* SLEEP APIs */
 
-app.post("/record/sleep", jwtModule.verifyToken, (req, res) => {
+app.post("/record/sleep", (req, res) => {
     recordDBModule.createSleep(req, res)
 })
 
-app.get("/record/sleep", jwtModule.verifyTokenForGetMethod, (req, res) => {
+app.get("/record/sleep", (req, res) => {
     recordDBModule.getSleep(req, res)
 })
 
-app.put("/record/sleep", jwtModule.verifyToken,(req, res) => {
+app.put("/record/sleep",(req, res) => {
     recordDBModule.editSleep(req, res)
 })
 
-app.delete("/record/sleep", jwtModule.verifyToken, (req, res) => {
+app.delete("/record/sleep", (req, res) => {
     recordDBModule.deleteSleep(req, res)
 })
 
@@ -105,27 +105,27 @@ app.delete("/record/sleep", jwtModule.verifyToken, (req, res) => {
 
 /* DIARY APIs */
 
-app.post("/record/diary", jwtModule.verifyToken, (req, res) => {
+app.post("/record/diary", (req, res) => {
     console.log("create diary requested :")
     recordDBModule.createDiary(req, res)
 })
 
-app.get("/record/diary", jwtModule.verifyTokenForGetMethod,  (req, res) => {
+app.get("/record/diary",  (req, res) => {
     recordDBModule.getDiary(req, res)
 })
 
-app.put("/record/diary", jwtModule.verifyToken, (req, res) => {
+app.put("/record/diary", (req, res) => {
     recordDBModule.editDiary(req, res)
 })
 
-app.delete("/record/diary", jwtModule.verifyToken, (req, res) => {
+app.delete("/record/diary", (req, res) => {
     recordDBModule.deleteDiary(req, res)
 })
 
 /* END OF DIARY APIs */
 
 /* Evaluation APIs */
-app.post("/evaluation", jwtModule.verifyToken, (req, res) => {
+app.post("/evaluation", (req, res) => {
     type = req.body.type
     if(type === "2q"){
         evaluationDBModule.insert2q(req, res)
@@ -138,7 +138,7 @@ app.post("/evaluation", jwtModule.verifyToken, (req, res) => {
     }
 })
 
-app.get("/evaluation", jwtModule.verifyTokenForGetMethod, (req, res) =>{
+app.get("/evaluation", (req, res) =>{
     evaluationDBModule.getEvaluation(req, res)
 })
 /* End of Evaluation APIs */
@@ -158,7 +158,7 @@ app.get("/more/hospital", (req, res) => {
     researcherDBModule.getHospital(req, res)
 })
 /* Researcher APIs */
- 
+
 app.listen(PORT, () =>{
     console.log('Thais Mood "Main server" APIs was ran on PORT ' + PORT)
 })
