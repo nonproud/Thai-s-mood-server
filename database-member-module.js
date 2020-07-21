@@ -194,7 +194,7 @@ function verifyEmail(req, res) {
     console.log(sql)
     pool.query(sql).then((result) => {
         console.log(result)
-        if (!result.length) {
+        if (result.rows.length <= 0) {
             console.log("Email: " + email + " verify status: failed")
             res.status(201).send("0")
             // pool.end()
