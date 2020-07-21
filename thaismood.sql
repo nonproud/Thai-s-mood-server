@@ -38,7 +38,7 @@ CREATE TABLE `activity` (
 -- Table structure for table `emotion`
 --
 
-CREATE TABLE `emotion` (
+CREATE TABLE `mood` (
   `username` varchar(100) NOT NULL,
   `emotion` int(11) NOT NULL,
   `level` int(11) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE `emotion` (
 -- Dumping data for table `emotion`
 --
 
-INSERT INTO `emotion` (`username`, `emotion`, `level`, `date`) VALUES
+INSERT INTO `mood` (`username`, `emotion`, `level`, `date`) VALUES
 ('', 2, 1, '2019-05-16'),
 ('', 3, 0, '2019-05-15'),
 ('', 1, 3, '2019-05-14'),
