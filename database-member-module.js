@@ -200,7 +200,7 @@ function verifyEmail(req, res) {
             // pool.end()
         } else {
             console.log("Email " + email + " verify status: success")
-            jwt_module.getAndSentToken(result.rows[0].username, result.rows[0].email, 1, res)
+            res.status(201).send("1")
 
 
             var sql2 = "UPDATE login SET is_verified = 1 WHERE email = '" + email + "'"
