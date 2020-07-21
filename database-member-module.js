@@ -29,7 +29,7 @@ function createAccount(req, res) {
         email = req.body.email
         username = req.body.username
         password = req.body.password
-        values = "'" + username + "', '" + email + "', crypt('" + password + "', gen_salt('bf')), '" + verifyPassword + "', " + "0";
+        values = "'" + username + "', '" + email + "', '" + password + "', '" + verifyPassword + "', " + "0";
         sql = "INSERT INTO login (username, email, password, otp, is_verified) VALUES (" + values + ");"
         pool.query(sql).then((result) => {
             mail_sender.sendValidateMail(email, verifyPassword)
@@ -147,7 +147,7 @@ function updateLoginDetails(req, res) {
             pool.end()
         })
     } else if (passwd != "NULL") {
-        sql = "UPDATE login set password = crypt('" + password + "', gen_salt('bf')) WHERE username = '" + username + "';"
+        sql = "UPDATE login set password = '" + password + "' WHERE username = '" + username + "';"
         pool.query(sql).then(result => {
             stauts = true
             pool.end()
@@ -169,7 +169,7 @@ function authLogin(req, res) {
     email = req.body.email
     password = req.body.password
     sql = "SELECT * FROM login WHERE (email = '" + email + "' OR username ='" + username +
-        "') AND password = crypt('" + password + "', password);"
+        "') AND password = '" + password + "';"
     pool.query(sql).then((result) => {
 
         if (result[0] === undefined) {
