@@ -18,10 +18,10 @@ function getUsername(token, callback) {
     return pool.query(getUsernameQueryString).then(result => {
         uname = result[0].username
         console.log("sql " + uname)
-        pool.end()
+        // pool.end()
         return callback(null, uname)
     }).catch(err => {
-        pool.end()
+        // pool.end()
         return callback(err, null)
     })
 }
@@ -44,10 +44,10 @@ function getMood(req, res) {
             objs.push({ username: username, emotion: result })
             res.status(201).send(objs)
             console.log("Complete tranfer emotion for: " + token + " username: " + username + " :P")
-            pool.end()
+            // pool.end()
         }).catch(err => {
             res.status(502).send("OPPS!")
-            pool.end()
+            // pool.end()
         })
     })
 }
@@ -57,7 +57,7 @@ function getHospital(req, res) {
     sql = "SELECT name, type, province, address FROM emergency WHERE province = '" + province + "';"
     pool.query(sql).then(result => {
         res.status(201).send(result)
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send(err)
     })

@@ -21,11 +21,11 @@ function insert2q(req, res) {
     sql = "INSERT INTO evaluation(username, _2q, date) values('" + username + "', " + score + ", '" + date + "');"
     pool.query(sql).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         console.log(err)
         res.status(502).send("Can't done your request")
-        pool.end()
+        // pool.end()
     })
 
 }
@@ -38,11 +38,11 @@ function insert9q(req, res) {
 
     pool.query(sql).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         console.log(err)
         res.status(502).send("Can't done your request")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -53,11 +53,11 @@ function insert8q(req, res) {
     sql = "UPDATE evaluation SET _8q = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
     pool.query(sql).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         console.log(err)
         res.status(502).send("Can't done your request")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -68,11 +68,11 @@ function insertMdq(req, res) {
     sql = "UPDATE evaluation SET mdq = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
     pool.query(sql).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         console.log(err)
         res.status(502).send("Can't done your request")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -84,11 +84,11 @@ function getEvaluation(req, res) {
         res.status(201).json({
             "result": result
         })
-        pool.end()
+        // pool.end()
     }).catch(err => {
         console.log(err)
         res.status(502).send("Can't done your request")
-        pool.end()
+        // pool.end()
     })
 
 }

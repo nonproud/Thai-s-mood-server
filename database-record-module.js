@@ -30,11 +30,11 @@ function getMood(req, res) {
         res.status(201).json({
             "result": result
         })
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
         console.log(err)
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -44,10 +44,10 @@ function createMood(req, res) {
     console.log(sql_insert_mood_record)
     pool.query(sql_insert_mood_record).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -57,11 +57,11 @@ function editMood(req, res) {
     console.log(sql_update_mood_record)
     pool.query(sql_update_mood_record).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         console.log(err)
         res.status(502).send(err)
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -70,10 +70,10 @@ function deleteMood(req, res) {
     console.log(sql_delete_mood)
     pool.query(sql_delete_mood).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -89,11 +89,11 @@ function getSleep(req, res) {
         res.status(201).json({
             "result": result
         })
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
         console.log(err)
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -104,11 +104,11 @@ function createSleep(req, res) {
     console.log(sql_insert_sleep_record)
     pool.query(sql_insert_sleep_record).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
         console.log(err)
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -119,10 +119,10 @@ function editSleep(req, res) {
     console.log(sql_update_sleep_record)
     pool.query(sql_update_sleep_record).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -131,10 +131,10 @@ function deleteSleep(req, res) {
     console.log(sql_delete_sleep)
     pool.query(sql_delete_mood).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -151,11 +151,11 @@ function getDiary(req, res) {
         res.status(201).json({
             "result": result
         })
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
         console.log(err)
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -165,10 +165,10 @@ function createDiary(req, res) {
     console.log(sql_insert_diary_record)
     pool.query(sql_insert_diary_record).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -178,10 +178,10 @@ function editDiary(req, res) {
     console.log(sql_update_diary_record)
     pool.query(sql_update_diary_record).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
-        pool.end()
+        // pool.end()
     })
 }
 
@@ -190,10 +190,10 @@ function deleteDiary(req, res) {
     console.log(sql_delete_diary)
     pool.query(sql_delete_mood).then(result => {
         res.status(201).send("1")
-        pool.end()
+        // pool.end()
     }).catch(err => {
         res.status(502).send("err")
-        pool.end()
+        // pool.end()
     })
 }
 

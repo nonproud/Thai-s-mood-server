@@ -14,11 +14,11 @@ function getEmailPassword(callback) {
     console.log(sql)
     pool.query(sql).then(result => {
         password = result[0].emailPassword
-        pool.end()
+        // pool.end()
         callback(password)
 
     }).catch(err => {
         console.log(err)
-        pool.end()
+        // pool.end()
     })
 }
