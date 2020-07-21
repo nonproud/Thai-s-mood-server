@@ -18,7 +18,7 @@ function insert2q(req, res) {
     score = req.body.score
     date = req.body.date
     username = req.body.username
-    sql = "INSERT INTO evaluation(username, 2q, date) values('" + username + "', " + score + ", '" + date + "');"
+    sql = "INSERT INTO evaluation(username, _2q, date) values('" + username + "', " + score + ", '" + date + "');"
     pool.query(sql).then(result => {
         res.status(201).send("1")
         pool.end()
@@ -34,7 +34,7 @@ function insert9q(req, res) {
     score = req.body.score
     date = req.body.date
     username = req.body.username
-    sql = "UPDATE evaluation SET 9q = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
+    sql = "UPDATE evaluation SET _9q = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
 
     pool.query(sql).then(result => {
         res.status(201).send("1")
@@ -50,7 +50,7 @@ function insert8q(req, res) {
     score = req.body.score
     date = req.body.date
     username = req.body.username
-    sql = "UPDATE evaluation SET 8q = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
+    sql = "UPDATE evaluation SET _8q = " + score + " WHERE username = '" + username + "' AND date = '" + date + "';"
     pool.query(sql).then(result => {
         res.status(201).send("1")
         pool.end()
@@ -78,7 +78,7 @@ function insertMdq(req, res) {
 
 function getEvaluation(req, res) {
     username = req.query.username
-    sql = "SELECT 2q, 9q, 8q, mdq, date FROM evaluation WHERE username = '" + username + "';"
+    sql = "SELECT _2q, _9q, _8q, mdq, date FROM evaluation WHERE username = '" + username + "';"
     console.log(sql)
     pool.query(sql).then(result => {
         res.status(201).json({

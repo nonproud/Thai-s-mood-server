@@ -14,7 +14,7 @@ module.exports = {
 function verifyToken(req, res, next) {
 
   const bearerHeader = req.headers['authorization'];
-  
+
   if(typeof bearerHeader !== 'undefined') {
 
     jwt.verify(bearerHeader, getSecret(), (err, authData) => {
@@ -38,14 +38,14 @@ function verifyToken(req, res, next) {
 function verifyTokenForGetMethod(req, res, next) {
 
   const bearerHeader = req.headers['authorization'];
-  
+
   if(typeof bearerHeader !== 'undefined') {
 
     jwt.verify(bearerHeader, getSecret(), (err, authData) => {
       if(err) {
         res.sendStatus(403);
       } else {
-        next();        
+        next();
       }
     });
   } else {
@@ -55,7 +55,7 @@ function verifyTokenForGetMethod(req, res, next) {
 
 }
 
-function getAndSentToken(username, email, is_verified, type, res){
+function getAndSentToken(username, email, is_verified, res){
 
   const user = {
     username: username,
@@ -69,7 +69,6 @@ function getAndSentToken(username, email, is_verified, type, res){
       "username": username,
       "email": email,
       "is_verified": is_verified,
-      "type": type
     });
   });
 
@@ -158,6 +157,6 @@ function getSecret(){
 //     requireJWTAuth = passport.authenticate("jwt", { session: false });
 
 //     res.send(true);
-    
+
 
 // }
