@@ -194,13 +194,13 @@ function verifyEmail(req, res) {
     console.log(sql)
     pool.query(sql).then((result) => {
         console.log(result)
-        if (result.rows.length <= 0) {
+        if (result.rowCount <= 0) {
             console.log("Email: " + email + " verify status: failed")
             res.status(201).send("0")
             // pool.end()
         } else {
             console.log("Email " + email + " verify status: success")
-            jwt_module.getAndSentToken(result[0].username, result[0].email, 1, result[0].type, res)
+            jwt_module.getAndSentToken(result.rows[0].username, result.rows[0].email, 1, res)
 
 
             var sql2 = "UPDATE login SET is_verified = 1 WHERE email = '" + email + "'"
